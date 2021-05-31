@@ -13,15 +13,10 @@ app.use(session({ secret: 'somevalue' }));
 app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev')); //서버로 들어온 요청과 응답 기록
 
-
-app.use(
-      express.json(),
-      express.static('/',path.join(__dirname, 'public')),//현재 경로로 요청
-      express.json(),
-      express.urleancoded({extended:false}),
-      cookieParser(precess.COOKIE_SECRET),
-);
-
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
       resave:false,
       saveUninitialized: false,
@@ -42,7 +37,21 @@ app.get('/', (req, res, next) => {
 }, (req, res) => {
       throw new Error('에러는 에러 처리 미들웨어로 갑니다.')
 });
+app.post('/post',(req,res)=>{
+      console.log('login');
+      var inputData;
+
+      req.on('data',(data)=>{
+            inputData = JSON.parse(data); //요청으로 온 데이터를 저장
+      })
+      req.on('end',()=>{
+            console.log("id : "+inputData.user_id+"password : "+ iniputData.user_password);
+      })
+})
+
+
 app.use((err, req, res, next) => {
       console.error(err);
       res.status(500).send(err.message);
 });
+
