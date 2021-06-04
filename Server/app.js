@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 const nunjucks = require('nunjucks');
 const multer = require('multer');
+var bodyParser= require('body-parser');
+var http = require('http');
 
 dotenv.config();
 const app = express(); //서버 실행
@@ -39,14 +41,10 @@ app.get('/', (req, res, next) => {
 });
 app.post('/post',(req,res)=>{
       console.log('login');
-      var inputData;
-
-      req.on('data',(data)=>{
-            inputData = JSON.parse(data); //요청으로 온 데이터를 저장
-      })
-      req.on('end',()=>{
-            console.log("id : "+inputData.user_id+"password : "+ iniputData.user_password);
-      })
+      var id = req.body.id;
+      var pw = req.body.password;
+      console.log(id); 
+      console.log(pw); 
 })
 
 
