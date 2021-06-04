@@ -1,4 +1,4 @@
-package com.example.news;
+package com.skuniv.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.news.R;
+import com.example.news.writeRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;

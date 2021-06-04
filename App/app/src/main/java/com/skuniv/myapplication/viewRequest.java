@@ -1,9 +1,10 @@
-package com.example.news;
+package com.skuniv.myapplication;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 public class viewRequest extends StringRequest {

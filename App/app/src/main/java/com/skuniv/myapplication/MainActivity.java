@@ -1,4 +1,4 @@
-package com.example.news;
+package com.skuniv.myapplication;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.example.news.R;
+import com.skuniv.myapplication.ViewActivity;
+import com.skuniv.myapplication.WriteActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         btn_infor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(com.example.news.MainActivity.this, com.example.news.InformationActivity.class);
+                Intent intent = new Intent(com.example.news.MainActivity.this, com.skuniv.myapplication.InformationActivity.class);
                 intent.putExtra("userID",userID);
                 intent.putExtra("userPass",userPass);
                 intent.putExtra("userName",userName);
@@ -330,6 +334,8 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 
     //뒤로가기 버튼을 두번누르면 종료

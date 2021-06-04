@@ -1,4 +1,4 @@
-package com.example.news;
+package com.skuniv.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.os.Handler;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.skuniv.myapplication.LoginActivity;
+import com.example.news.R;
 
 public class introActivity extends AppCompatActivity {
 
@@ -23,7 +26,7 @@ public class introActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(com.example.news.introActivity.this, LoginActivity.class);
+                Intent intent = new Intent(com.skuniv.myapplication.introActivity.this, LoginActivity.class);
                 startActivity(intent);
 
                 finish();
