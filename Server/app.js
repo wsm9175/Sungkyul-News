@@ -8,6 +8,9 @@ const nunjucks = require('nunjucks');
 const multer = require('multer');
 var bodyParser= require('body-parser');
 var http = require('http');
+const usersrouter= require("./routes/users");
+const models=require("./models");
+
 
 dotenv.config();
 const app = express(); //서버 실행
@@ -33,19 +36,25 @@ app.listen(app.get('port'),()=>{
       console.log(app.get('port'),'번포트에서 대기 중');
 })
 
+models.sequelize.sync().then( () => {
+      console.log(" DB 연결 성공");
+    }).catch(err => {
+      console.log("연결 실패");
+      console.log(err);
+    });
+
+app.use('/users', usersrouter);
+
+
+
+
 app.get('/', (req, res, next) => {
       console.log('안드로이드 연결 완료');
       next();
 }, (req, res) => {
       throw new Error('에러는 에러 처리 미들웨어로 갑니다.')
 });
-app.post('/post',(req,res)=>{
-      console.log('login');
-      var id = req.body.id;
-      var pw = req.body.password;
-      console.log(id); 
-      console.log(pw); 
-})
+
 
 
 app.use((err, req, res, next) => {
