@@ -1,4 +1,16 @@
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/overlapRequest.java
 package com.skuniv.myapplication;
+=======
+package com.example.news;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/overlapRequest.java
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;

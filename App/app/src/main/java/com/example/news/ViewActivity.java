@@ -1,4 +1,8 @@
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/ViewActivity.java
 package com.skuniv.myapplication;
+=======
+package com.example.news;
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/ViewActivity.java
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/ViewActivity.java
 import com.skuniv.myapplication.R;
+=======
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/ViewActivity.java
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +79,11 @@ public class ViewActivity extends AppCompatActivity {
 
         //서버로부터 요청
         viewRequest viewRequest = new viewRequest(BBS_NO,responseListener);
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/ViewActivity.java
         RequestQueue queue = Volley.newRequestQueue(com.skuniv.myapplication.ViewActivity.this);
+=======
+        RequestQueue queue = Volley.newRequestQueue(com.example.news.ViewActivity.this);
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/ViewActivity.java
         queue.add(viewRequest);
 
 
@@ -108,7 +119,11 @@ public class ViewActivity extends AppCompatActivity {
                             if (success) {
                                 // 작성 성공
                                 Toast.makeText(getApplicationContext(), "작성되었습니다!", Toast.LENGTH_SHORT).show();
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/ViewActivity.java
                                 Intent intent = new Intent(com.skuniv.myapplication.ViewActivity.this, MainActivity.class);
+=======
+                                Intent intent = new Intent(com.example.news.ViewActivity.this, MainActivity.class);
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/ViewActivity.java
                                 startActivity(intent);
                             } else {
                                 // 작성 실패
@@ -138,10 +153,18 @@ public class ViewActivity extends AppCompatActivity {
                 //댓글 토스트 메세지
                 //댓글 listview로 화면 전
                 Toast.makeText(getApplicationContext(), "댓글", Toast.LENGTH_SHORT).show();
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/ViewActivity.java
                 Intent cintent = new Intent(com.skuniv.myapplication.ViewActivity.this, CViewActivity.class);
+=======
+                Intent cintent = new Intent(com.example.news.ViewActivity.this, CViewActivity.class);
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/ViewActivity.java
 //                intent.putExtra("c_userID",c_userID);
                 startActivity(cintent);
             }
         });
     }
 }
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/ViewActivity.java
+=======
+
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/ViewActivity.java

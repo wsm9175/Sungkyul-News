@@ -1,4 +1,9 @@
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/InformationActivity.java
 package com.skuniv.myapplication;
+=======
+
+package com.example.news;
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/InformationActivity.java
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +11,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/InformationActivity.java
 import com.skuniv.myapplication.R;
 
+=======
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/InformationActivity.java
 public class InformationActivity extends AppCompatActivity {
 
     private TextView tv_id,tv_pass,tv_name,tv_email;
@@ -34,3 +42,7 @@ public class InformationActivity extends AppCompatActivity {
         tv_email.setText(userEmail);
     }
 }
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/InformationActivity.java
+=======
+
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/InformationActivity.java

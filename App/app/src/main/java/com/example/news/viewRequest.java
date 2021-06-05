@@ -1,4 +1,8 @@
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/viewRequest.java
 package com.skuniv.myapplication;
+=======
+package com.example.news;
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/viewRequest.java
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
@@ -27,4 +31,8 @@ public class viewRequest extends StringRequest {
         return map;
     }
 
+<<<<<<< HEAD:App/app/src/main/java/com/example/news/viewRequest.java
 }
+=======
+}
+>>>>>>> f38f4da00ce10501ceb91d688966cf4832b6c259:App/app/src/main/java/com/skuniv/myapplication/viewRequest.java
