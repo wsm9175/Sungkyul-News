@@ -53,8 +53,8 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
         Board board = board_list.get(position);
         viewHolder.txt_boardName.setText(board.getName());
         viewHolder.txt_boardContents.setText(board.getContent());
-        viewHolder.txt_commentsNum.setText(board.getComment());
-        viewHolder.txt_recommendationNum.setText(board.getRecommendation());
+        viewHolder.txt_commentsNum.setText(String.valueOf(board.getComment()));
+        viewHolder.txt_recommendationNum.setText(String.valueOf(board.getRecommendation()));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
