@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Context;
 

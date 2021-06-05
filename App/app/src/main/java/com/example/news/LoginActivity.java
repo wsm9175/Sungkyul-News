@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.skuniv.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(com.skuniv.myapplication.LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(com.example.news.LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
 
             }
@@ -60,46 +59,12 @@ public class LoginActivity extends AppCompatActivity {
                 String userID = et_id.getText().toString();
                 String userPass = et_pass.getText().toString();
                 requestLogin(userID,userPass);
-
-//                Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            boolean success = jsonObject.getBoolean("success");
-//                            if(success) {
-//                                // 로그인 성공
-//                                String userID = jsonObject.getString("userID");
-//                                String userPass = jsonObject.getString("userPassword");
-//                                String userName = jsonObject.getString("userName");
-//                                String userEmail = jsonObject.getString("userEmail");
-//                                Toast.makeText(getApplicationContext(),"로그인이 성공적으로 이뤄졌습니다!", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(com.example.myapplication.LoginActivity.this, MainActivity.class);
-//                                intent.putExtra("userID",userID);
-//                                intent.putExtra("userPass",userPass);
-//                                intent.putExtra("userName",userName);
-//                                intent.putExtra("userEmail",userEmail);
-//                                startActivity(intent);
-//                            }
-//                            else {
-//                                // 로그인 실패
-//                                Toast.makeText(getApplicationContext(),"로그인에 실패하셨습니다.", Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//                loginRequest loginRequest = new loginRequest(userID,userPass,responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(com.example.myapplication.LoginActivity.this);
-//                queue.add(loginRequest);
             }
         });
     }
 
     public void requestLogin(String ID, String PW){
-        String url = "http://10.0.2.2:3000/users/login";
+        String url = "http://10.0.2.2:3000/index/users/login";
 
         JSONObject testjson = new JSONObject();
         try {
@@ -123,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(resultId.equals(ID) && resultPassword.equals(PW)){
                             Toast.makeText(getApplicationContext(),"로그인 성공",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(com.skuniv.myapplication.LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(com.example.news.LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID",ID);
                             intent.putExtra("userPass",PW);
 

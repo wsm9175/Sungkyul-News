@@ -11,15 +11,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText et_id,et_pass ,et_name ,et_email;
+    private EditText et_id,et_pass ,et_name ,et_email, et_phonenumber, et_major, et_schoolid;
     private Button btn_register, btn_overlap;
 
     @Override
@@ -35,6 +39,9 @@ public class RegisterActivity extends AppCompatActivity {
         et_pass = findViewById(R.id.et_pass);
         et_name = findViewById(R.id.et_name);
         et_email = findViewById(R.id.et_email);
+        et_phonenumber = findViewById(R.id.et_phonenumber);
+        et_major = findViewById(R.id.et_major);
+        et_schoolid = findViewById(R.id.et_schoolid);
         btn_register = findViewById(R.id.btn_register);
         btn_overlap = findViewById(R.id.btn_overlap);
 
@@ -48,40 +55,89 @@ public class RegisterActivity extends AppCompatActivity {
                 String userPass = et_pass.getText().toString();
                 String userName = et_name.getText().toString();
                 String userEmail = et_email.getText().toString();
+                String phonenumber = et_phonenumber.getText().toString();
+                String major = et_major.getText().toString();
+                String Schoolid = et_schoolid.getText().toString();
 
-
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            boolean success = jsonObject.getBoolean("success");
-                            if(success) {
-                                // 회원가입 성공
-                                Toast.makeText(getApplicationContext(),"회원 가입이 성공적으로 이뤄졌습니다!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(com.example.news.RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }
-                            else {
-                                // 회원가입 실패
-                                Toast.makeText(getApplicationContext(),"회원 가입이 실패하셨습니다.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                };
-
-                //서버로 요청
-                registerRequest registerRequest = new registerRequest(userID,userPass,userName,userEmail,responseListener);
-                RequestQueue queue = Volley.newRequestQueue(com.example.news.RegisterActivity.this);
-                queue.add(registerRequest);
+                try {
+                    requestSignup(userID, userPass, userName, userEmail, phonenumber, Schoolid, major);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
+
+            public void requestSignup(String ID, String PW, String Name, String Email, String Phondenumber, String Schoolid, String Major) throws JSONException {
+                String url = "http://10.0.2.2:3000/index/users";
+
+                //JSON형식으로 데이터 통신을 진행
+                JSONObject testjson = new JSONObject();
+                try {
+                    //입력해둔 edittext의 id와 pw값을 받아와 put : 데이터를 json형식으로 바꿔 넣음.
+                    testjson.put("id", ID);
+                    testjson.put("password", PW);
+                    testjson.put("name", Name);
+                    testjson.put("email", Email);
+                    testjson.put("phonenumber", Phondenumber);
+                    testjson.put("schoolid", Schoolid);
+                    testjson.put("major", Major);
+
+
+                    String jsonString = testjson.toString(); //완성된 json 포맷
+
+                    final RequestQueue requestQueue = Volley.newRequestQueue(RegisterActivity.this);
+                    final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, testjson, new Response.Listener<JSONObject>() {
+
+                        //데이터 전달을 끝내고 이제 그 응답을 받을 차례
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                //받은 json형식의 응답을 받아
+                                JSONObject jsonObject = new JSONObject(response.toString());
+
+                                //key값에 따라 value값을 쪼개 받아옴.
+                                String resultId = jsonObject.getString("approve_id");
+                                String resultPassword = jsonObject.getString("approve_pw");
+
+                                if (resultId.equals("OK") & resultPassword.equals("OK")) {
+                                    Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    easyToast("로그인 실패");
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                        //서버로 데이터 전달 및 응답 받기에 실패한 경우 아래 코드가 실행됩니다.
+                    }, new Response.ErrorListener() {
+
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                        }
+                    });
+                    jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    requestQueue.add(jsonObjectRequest);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            void easyToast(String str) {
+                Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+            }
+
+            ;
+
+
         });
 
         btn_overlap.setOnClickListener(new View.OnClickListener() {
@@ -97,12 +153,11 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
-                            if(success) {
+                            if (success) {
 
-                                Toast.makeText(getApplicationContext(),"중복된 아이디입니다.", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(),"사용할 수 있는아이디입니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "중복된 아이디입니다.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "사용할 수 있는아이디입니다.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } catch (JSONException e) {
@@ -113,18 +168,9 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
-                //서버로 요청
-                com.example.news.overlapRequest overlapRequest = new com.example.news.overlapRequest(userID,responseListener2);
-                RequestQueue queue2 = Volley.newRequestQueue(com.example.news.RegisterActivity.this);
-                queue2.add(overlapRequest);
 
             }
         });
 
-
-
-
-
     }
-}
-
+    }

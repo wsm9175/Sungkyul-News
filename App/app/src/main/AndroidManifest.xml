@@ -13,31 +13,31 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".introActivity"
+            android:name="com.example.news.introActivity"
             android:label="Sungkyul News">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".InformationActivity">
+        <activity android:name="com.example.news.InformationActivity">
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name="com.example.news.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name="com.example.news.RegisterActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity"/>
+                android:value="com.example.news.LoginActivity"/>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ViewActivity">
+        <activity android:name="com.example.news.MainActivity" />
+        <activity android:name="com.example.news.ViewActivity">
         </activity>
-        <activity android:name=".WriteActivity">
+        <activity android:name="com.example.news.WriteActivity">
         </activity>
-        <activity android:name=".CViewActivity">
+        <activity android:name="com.example.news.CViewActivity">
         </activity>
     </application>
 </manifest>
