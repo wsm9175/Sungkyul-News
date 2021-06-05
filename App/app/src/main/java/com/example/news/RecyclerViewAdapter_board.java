@@ -1,5 +1,6 @@
 package com.example.news;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerViewAdapter_board.MyViewHolder>{
-    ArrayList<Board> board_list = new ArrayList<Board>();
+    List<Board> board_list = new ArrayList<Board>();
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_board;
@@ -34,7 +36,7 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
             }
         }
 
-    public RecyclerViewAdapter_board(ArrayList<Board> board) {
+    public RecyclerViewAdapter_board(List<Board> board) {
         board_list = board;
     }
 
@@ -42,10 +44,10 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        LinearLayout v = (LinearLayout) LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.board, viewGroup, false);
+        View holderView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.board, viewGroup, false);
+        MyViewHolder myViewHolder = new MyViewHolder(holderView);
+        return myViewHolder;
 
-        return new MyViewHolder(v);
     }
     //데이터 세팅
     public void onBindViewHolder(MyViewHolder viewHolder, int position) {
