@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter_board recyclerAdapter;
     private RequestQueue queue;
+    private ImageButton btn_write;
 
     //새로고침 구현
     private void refreshListView(){
@@ -123,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        Volley.newRequestQueue(this);
+        queue=Volley.newRequestQueue(this);
         getNews();
 
 
 
         //작성 버튼 선언, xml에서 가져오기
-        ImageButton btn_write = (ImageButton) findViewById(R.id.btn_write);
+        btn_write = (ImageButton) findViewById(R.id.btn_write);
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,9 +146,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void getNews(){
 
-        String url ="http://www.google.com"; //URL입력
+        String url ="http://10.0.2.2:3000/index/boards"; //URL입력
 
         // Request a string response from the provided URL.
+
+        //response - 서버로 부터 받아오는 데이터
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     //response - 서버로 부터 받아오는 데이터
@@ -165,23 +168,23 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject obj = arrayArticles.getJSONObject(i);
                                 Board board = new Board();
                                 //게시판 number
-                                board.setNumber( obj.getInt("number"));
+                                board.setNumber( obj.getInt("id"));
                                 //게시판 name
-                                board.setNumber( obj.getInt("name"));
+                                board.setName( obj.getString("title"));
                                 //게시판 content
-                                board.setNumber( obj.getInt("content"));
+                                board.setContent( obj.getString("contents"));
                                 //게시판 registrationDate;
-                                board.setNumber( obj.getInt("registrationDate"));
+                                board.setRegistrationDate( obj.getString("date"));
                                 //게시판 View
-                                board.setNumber( obj.getInt("viewCount"));
+                                board.setView( obj.getInt("view"));
                                 //게시판 Comment
-                                board.setNumber( obj.getInt("commentCount"));
-                                //게시판 recommendation
-                                board.setNumber( obj.getInt("recommendationCount"));
+                                board.setComment( obj.getInt("comment_number"));
+                                        //게시판 recommendation
+                                        board.setRecommendation( obj.getInt("recommends"));
                                 //게시판 writer;
-                                board.setNumber( obj.getInt("writer"));
+                                board.setWriter( obj.getString("user_id"));
                                 //게시판 board_id;
-                                board.setNumber( obj.getInt("board_id"));
+                                board.setBoard_id( obj.getString("board_code"));
                                 board_list.add(board);
                             }
                             recyclerAdapter = new RecyclerViewAdapter_board(board_list);
@@ -193,9 +196,10 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
             }
         });
+
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);

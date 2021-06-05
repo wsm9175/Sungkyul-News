@@ -19,5 +19,19 @@ router.post('/',(req,res)=>{
       res.send(result);
 })
 
+router.get('/',async (req,res)=>{
+      var arr = await Board.findAll({
+            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code'],
+           raw:true,
+      })
+      var result ={'articles':arr}
+
+      console.log(arr);
+      console.log(result);
+
+      res.send(result);
+
+})
+
 
 module.exports=router;

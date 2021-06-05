@@ -33,7 +33,7 @@ module.exports = {
       user_id: {
         type: Sequelize.STRING
       },
-      boarad_code: {
+      board_code: {
         type: Sequelize.STRING
       },
       createdAt: {

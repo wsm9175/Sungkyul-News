@@ -11,7 +11,7 @@ public class Board implements Serializable {
     private int Comment;
     private int recommendation;
     private String writer;
-    private int board_id;
+    private String board_id;
 
     public int getNumber() {
         return number;
@@ -77,11 +77,11 @@ public class Board implements Serializable {
         this.writer = writer;
     }
 
-    public int getBoard_id() {
+    public String getBoard_id() {
         return board_id;
     }
 
-    public void setBoard_id(int board_id) {
+    public void setBoard_id(String board_id) {
         this.board_id = board_id;
     }
 }
