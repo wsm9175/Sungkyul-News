@@ -163,8 +163,9 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray arrayArticles = jsonObject.getJSONArray("articles");
                             //배열안에 게시판을 하나씩 빼옴
                             //빼온 게시판을 Board Class에 대입 및 ArrayList에 삽입
-                            ArrayList<Board> board_list = new ArrayList<Board>();
-                            for(int i=0, j=arrayArticles.length();i<j;i++){
+                            List<Board> board_list = new ArrayList<Board>();
+                            for(int i=0;i<arrayArticles.length();i++){
+
                                 JSONObject obj = arrayArticles.getJSONObject(i);
                                 Board board = new Board();
                                 //게시판 number

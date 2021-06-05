@@ -12,9 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerViewAdapter_board.MyViewHolder>{
-    ArrayList<Board> board_list = new ArrayList<Board>();
+    List<Board> board_list;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_board;
@@ -34,22 +35,21 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
             }
         }
 
-    public RecyclerViewAdapter_board(ArrayList<Board> board) {
+    public RecyclerViewAdapter_board(List<Board> board) {
         board_list = board;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
-        LinearLayout v = (LinearLayout) LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.board, viewGroup, false);
-
-        return new MyViewHolder(v);
+        View holderView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.board, viewGroup, false);
+        MyViewHolder myViewHolder = new MyViewHolder(holderView);
+        return myViewHolder;
     }
     //데이터 세팅
     public void onBindViewHolder(MyViewHolder viewHolder, int position) {
         //이름 세팅
+        System.out.println(board_list.size());
         Board board = board_list.get(position);
         viewHolder.txt_boardName.setText(board.getName());
         viewHolder.txt_boardContents.setText(board.getContent());
