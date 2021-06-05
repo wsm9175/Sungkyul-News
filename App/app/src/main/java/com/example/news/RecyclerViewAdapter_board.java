@@ -43,15 +43,14 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
     // Create new views (invoked by the layout manager)
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
         View holderView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.board, viewGroup, false);
         MyViewHolder myViewHolder = new MyViewHolder(holderView);
         return myViewHolder;
-
     }
     //데이터 세팅
     public void onBindViewHolder(MyViewHolder viewHolder, int position) {
         //이름 세팅
+        System.out.println(board_list.size());
         Board board = board_list.get(position);
         viewHolder.txt_boardName.setText(board.getName());
         viewHolder.txt_boardContents.setText(board.getContent());
