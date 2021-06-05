@@ -20,21 +20,7 @@
 <!--            android:text="+"-->
 <!--            android:textSize="20dp" />-->
 
-        <ListView
-            android:id="@+id/listview_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            android:dividerHeight="1dp"
-            android:divider="#ffffff"
-            android:background="#3203A9F4">
 
-        </ListView>
         <ImageButton
             android:id="@+id/btn_write"
             android:layout_width="wrap_content"
@@ -46,6 +32,10 @@
             android:paddingBottom="20dp"
             app:srcCompat="@drawable/plus" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/articles_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
     <include layout = "@layout/activity_drawer"/>

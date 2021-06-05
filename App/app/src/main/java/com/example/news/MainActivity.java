@@ -22,6 +22,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,22 +51,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_id;
     private DrawerLayout drawerLayout;
     private View drawerView;
-    static ArrayAdapter<String> adapter;
-
-    //받아올 data(사용자가 쓴 글)
-    List<String> data = new ArrayList<>();
-
-    //test for listview
-//    static final String[] LIST_POST = {
-//            "post1 - Paul - 2020/6/6",
-//            "post2 - Mike - 2020/6/7",
-//            "post3 - Sarah - 2020/6/8"
-//    };
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter_board recyclerAdapter;
+    private RequestQueue queue;
 
     //새로고침 구현
     private void refreshListView(){
-        Getlistdata getlistdata = new Getlistdata();
-        getlistdata.execute();
+//        Getlistdata getlistdata = new Getlistdata();
+//        getlistdata.execute();
     }
 
     @Override
@@ -117,40 +118,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //xml에서 담아온 listview 정의
-        ListView listView = (ListView) findViewById(R.id.listview_posts);
-        //adapter 선언: 리스트 방식, LIST_POST의 정보를 adapter에
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
-        //listview와 adapter를 연결
-        listView.setAdapter(adapter);
+        //기사 목록 받아오기
+        recyclerView = findViewById(R.id.articles_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
-        //listview 테스트
-        data.add("post1 - Paul - 2020/6/6");
-        data.add("post2 - Mike - 2020/6/7");
-        data.add("post3 - Sarah - 2020/6/8");
-        //상태 저장
-        //adapter.notifyDataSetChanged();
+        Volley.newRequestQueue(this);
+        getNews();
 
-        //listview 클릭 시
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //list를 눌렀을 때 화면 전환 -> 게시글 보여주기
-                Intent intent = new Intent(com.example.news.MainActivity.this, com.example.news.ViewActivity.class);
 
-                //adapter에 담긴 데이터를 position 별로 가져와 담기
-                String str = adapter.getItem(position);
-                String BBS_NO = "";
-                int i = 0;
-                while(str.charAt(i) != '-') {
-                    BBS_NO += str.charAt(i);
-                    i++;
-                }
-                intent.putExtra("BBS_NO",BBS_NO);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "게시글", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         //작성 버튼 선언, xml에서 가져오기
         ImageButton btn_write = (ImageButton) findViewById(R.id.btn_write);
@@ -165,128 +141,64 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"새 게시글 작성", Toast.LENGTH_SHORT).show();
             }
         });
-
-        Getlistdata getlistdata = new Getlistdata();
-        getlistdata.execute();
-
     }
 
-    //json 포맷으로 가공된 데이터를 가져오기
-    public static class Getlistdata extends AsyncTask<String, Void, String[]> {
+    public void getNews(){
 
-        private final String LOG_TAG = Getlistdata.class.getSimpleName();
+        String url ="http://www.google.com"; //URL입력
 
-        private  String[] getListDataFromJson(String dataJsonStr)
-                throws JSONException {
-
-            final String STR_NUM = "BBS_NO";
-            final String STR_ID = "userID";
-            final String STR_TITLE = "TITLE";
-            final String STR_DATE = "REG_DATE";
-
-            JSONObject dataJson = new JSONObject(dataJsonStr);
-            JSONArray dataArray = dataJson.getJSONArray("BBSList");
-
-
-            String[] resultStrs = new String[dataArray.length()];
-            for(int i=0;i < dataArray.length(); i++){
-                int num;
-                String ID;
-                String title;
-                String date;
-
-                JSONObject data = dataArray.getJSONObject(i);
-
-                num = data.getInt(STR_NUM);
-                ID = data.getString(STR_ID);
-                title = data.getString(STR_TITLE);
-                date = data.getString(STR_DATE);
-
-                resultStrs[i] = num + "-" + ID + "-" + title + "-" + date;
-            }
-
-            for (String s: resultStrs) {
-                Log.v(LOG_TAG, "data entry " + s);
-            }
-            return resultStrs;
-        }
-
-        //parsing한 데이터 listview에 뿌리기
-        @Override
-        protected String[] doInBackground(String... params) {
-            HttpURLConnection urlConnection =  null;
-            BufferedReader reader = null;
-
-            String dataJsonStr = null;
-
-            try {
-                final String URL = "http://.dothome.co.kr/BBSList.php";
-
-                Uri builtUri = Uri.parse(URL).buildUpon().build();
-
-                java.net.URL url = new URL(builtUri.toString());
-                Log.v(LOG_TAG,"Built URI" + builtUri.toString());
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if(inputStream == null) {
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-
-                while((line = reader.readLine()) != null) {
-
-                    buffer.append(line + "\n");
-
-                }
-
-                if(buffer.length() == 0) {
-                    return null;
-                }
-
-                dataJsonStr = buffer.toString();
-
-                Log.v(LOG_TAG,"data String " + dataJsonStr);
-            }catch (IOException e) {
-                Log.e(LOG_TAG, "Error",e);
-
-                return null;
-            }finally {
-                if(urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if(reader != null) {
-                    try {
-                        reader.close();
-                    }catch (final IOException e){
-                        Log.e(LOG_TAG,"Error closing stream", e);
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    //response - 서버로 부터 받아오는 데이터
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //데이터를 json화
+                            JSONObject jsonObject = new JSONObject(response);
+                            //데이터안에 배열을 가져옴
+                            JSONArray arrayArticles = jsonObject.getJSONArray("articles");
+                            //배열안에 게시판을 하나씩 빼옴
+                            //빼온 게시판을 Board Class에 대입 및 ArrayList에 삽입
+                            ArrayList<Board> board_list = new ArrayList<Board>();
+                            for(int i=0, j=arrayArticles.length();i<j;i++){
+                                JSONObject obj = arrayArticles.getJSONObject(i);
+                                Board board = new Board();
+                                //게시판 number
+                                board.setNumber( obj.getInt("number"));
+                                //게시판 name
+                                board.setNumber( obj.getInt("name"));
+                                //게시판 content
+                                board.setNumber( obj.getInt("content"));
+                                //게시판 registrationDate;
+                                board.setNumber( obj.getInt("registrationDate"));
+                                //게시판 View
+                                board.setNumber( obj.getInt("viewCount"));
+                                //게시판 Comment
+                                board.setNumber( obj.getInt("commentCount"));
+                                //게시판 recommendation
+                                board.setNumber( obj.getInt("recommendationCount"));
+                                //게시판 writer;
+                                board.setNumber( obj.getInt("writer"));
+                                //게시판 board_id;
+                                board.setNumber( obj.getInt("board_id"));
+                                board_list.add(board);
+                            }
+                            recyclerAdapter = new RecyclerViewAdapter_board(board_list);
+                            recyclerView.setAdapter(recyclerAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT).show();
             }
-            try {
-                return getListDataFromJson(dataJsonStr);
-            }catch (JSONException e){
-                Log.e(LOG_TAG,e.getMessage(),e);
-                e.printStackTrace();
-            }
-            return null;
-        }
+        });
 
-        @Override
-        protected void onPostExecute(String[] result) {
-            if(result != null){
-                adapter.clear();
-                for(String Getdata : result){
-                    adapter.add(Getdata);
-                }
-            }
-        }
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     //메뉴창
@@ -343,4 +255,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
 }

@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CViewActivity extends AppCompatActivity {
-    //기사 목록을 담아 놓는 리스트
+    //댓글 목록을 담아 놓는 리스트
     private RecyclerView recyclerView;
     private RecyclerViewAdapter_board recyclerAdapter;
     private RequestQueue queue;
@@ -61,30 +61,18 @@ public class CViewActivity extends AppCompatActivity {
                     //response - 서버로 부터 받아오는 데이터
                     @Override
                     public void onResponse(String response) {
-
                         try {
                             //데이터를 json화
                             JSONObject jsonObject = new JSONObject(response);
                             //데이터안에 배열을 가져옴
                             JSONArray arrayArticles = jsonObject.getJSONArray("article");
-                            //배열안에 게시판을 하나씩 빼옴
+                            //배열안에 댓글을 하나씩 빼옴
                             ArrayList<Board> board_list = new ArrayList<Board>();
                             for(int i=0, j=arrayArticles.length();i<j;i++){
                                 JSONObject obj = arrayArticles.getJSONObject(i);
-                                //게시판 number
-                                //obj.getString();
-                                //게시판 name
-                                //게시판 content
-                                //게시판 registrationDate;
-                                //게시판 View
-                                //게시판 Comment
-                                //게시판 recommendation
-                                //게시판 writer;
-                                //게시판 board_id;
-
                                 Board board = new Board();
                                 //위에 가져온 내용을 board에 setting
-                                //board.setNumber();
+                                //board.setNumber(a);
 
                                 board_list.add(board);
                             }

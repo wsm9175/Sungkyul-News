@@ -58,7 +58,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 String userID = et_id.getText().toString();
                 String userPass = et_pass.getText().toString();
-                requestLogin(userID,userPass);
+//                requestLogin(userID,userPass);
+                Intent intent = new Intent(com.example.news.LoginActivity.this, com.example.news.MainActivity.class);
+                startActivity(intent);
             }
         });
     }

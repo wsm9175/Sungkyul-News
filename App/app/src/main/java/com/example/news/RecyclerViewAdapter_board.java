@@ -32,13 +32,6 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
                 txt_recommendationNum = itemView.findViewById(R.id.txt_recomendationNum);
                 txt_commentsNum = itemView.findViewById(R.id.txt_commentsNum);
             }
-
-//          void onBind(Board board){
-//              txt_boardName.setText(board.getName());
-//              txt_boardContents.setText(board.getContent());
-//              txt_recommendationNum.setText(board.getRecommendation());
-//              txt_commentsNum.setText(board.getComment());
-//          }
         }
 
     public RecyclerViewAdapter_board(ArrayList<Board> board) {
@@ -69,4 +62,6 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
     public int getItemCount() {
         return board_list.size();
     }
+
+    //알고리즘 부분 댓글순, 추천순 정렬
 }
