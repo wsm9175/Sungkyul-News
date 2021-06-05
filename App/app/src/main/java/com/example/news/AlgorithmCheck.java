@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 public class AlgorithmCheck {
     

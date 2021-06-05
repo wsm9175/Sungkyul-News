@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.skuniv.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
             public void requestSignup(String ID, String PW, String Name, String Email, String Phondenumber, String Schoolid, String Major){
-                String url = "http://10.0.2.2:3000/users";
+                String url = "http://10.0.2.2:3000/index/users";
 
                 //JSON형식으로 데이터 통신을 진행
                 JSONObject testjson = new JSONObject();
@@ -162,8 +161,8 @@ public class RegisterActivity extends AppCompatActivity {
                 };
 
                 //서버로 요청
-                com.skuniv.myapplication.overlapRequest overlapRequest = new com.skuniv.myapplication.overlapRequest(userID,responseListener2);
-                RequestQueue queue2 = Volley.newRequestQueue(com.skuniv.myapplication.RegisterActivity.this);
+                com.example.news.overlapRequest overlapRequest = new com.example.news.overlapRequest(userID,responseListener2);
+                RequestQueue queue2 = Volley.newRequestQueue(com.example.news.RegisterActivity.this);
                 queue2.add(overlapRequest);
 
             }

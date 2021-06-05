@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.skuniv.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +71,7 @@ public class ViewActivity extends AppCompatActivity {
 
         //서버로부터 요청
         viewRequest viewRequest = new viewRequest(BBS_NO,responseListener);
-        RequestQueue queue = Volley.newRequestQueue(com.skuniv.myapplication.ViewActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(com.example.news.ViewActivity.this);
         queue.add(viewRequest);
 
 
@@ -108,7 +107,7 @@ public class ViewActivity extends AppCompatActivity {
                             if (success) {
                                 // 작성 성공
                                 Toast.makeText(getApplicationContext(), "작성되었습니다!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(com.skuniv.myapplication.ViewActivity.this, MainActivity.class);
+                                Intent intent = new Intent(com.example.news.ViewActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else {
                                 // 작성 실패
@@ -138,7 +137,7 @@ public class ViewActivity extends AppCompatActivity {
                 //댓글 토스트 메세지
                 //댓글 listview로 화면 전
                 Toast.makeText(getApplicationContext(), "댓글", Toast.LENGTH_SHORT).show();
-                Intent cintent = new Intent(com.skuniv.myapplication.ViewActivity.this, CViewActivity.class);
+                Intent cintent = new Intent(com.example.news.ViewActivity.this, CViewActivity.class);
 //                intent.putExtra("c_userID",c_userID);
                 startActivity(cintent);
             }

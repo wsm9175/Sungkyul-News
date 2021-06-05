@@ -1,12 +1,10 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.skuniv.myapplication.R;
 
 public class InformationActivity extends AppCompatActivity {
 

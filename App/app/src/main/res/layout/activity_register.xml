@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#3203A9F4"
-    tools:context=".RegisterActivity">
+    tools:context="com.example.news.RegisterActivity">
 
     <EditText
         android:id="@+id/et_id"
@@ -45,9 +45,9 @@
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/et_email"
-        app:layout_constraintStart_toStartOf="@+id/et_email"
-        app:layout_constraintTop_toBottomOf="@+id/et_email" />
+        app:layout_constraintEnd_toEndOf="@+id/et_phonenumber"
+        app:layout_constraintStart_toStartOf="@+id/et_phonenumber"
+        app:layout_constraintTop_toBottomOf="@+id/et_phonenumber" />
 
     <EditText
         android:id="@+id/et_name"
@@ -75,6 +75,7 @@
 
     <TextView
         android:id="@+id/textView5"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginTop="90dp"
         android:text="Sungkyul News"
@@ -83,6 +84,42 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_major"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="학과"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/et_email"
+        app:layout_constraintStart_toStartOf="@+id/et_email"
+        app:layout_constraintTop_toBottomOf="@+id/et_email" />
+
+    <EditText
+        android:id="@+id/et_schoolid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="학번"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/et_major"
+        app:layout_constraintStart_toStartOf="@+id/et_major"
+        app:layout_constraintTop_toBottomOf="@+id/et_major" />
+
+    <EditText
+        android:id="@+id/et_phonenumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="전화번호"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/et_schoolid"
+        app:layout_constraintStart_toStartOf="@+id/et_schoolid"
+        app:layout_constraintTop_toBottomOf="@+id/et_schoolid" />
 
     <Button
         android:id="@+id/btn_overlap"

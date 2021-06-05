@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.skuniv.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(com.skuniv.myapplication.LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(com.example.news.LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
 
             }
@@ -99,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void requestLogin(String ID, String PW){
-        String url = "http://10.0.2.2:3000/users/login";
+        String url = "http://10.0.2.2:3000/index/users/login";
 
         JSONObject testjson = new JSONObject();
         try {
@@ -123,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(resultId.equals(ID) && resultPassword.equals(PW)){
                             Toast.makeText(getApplicationContext(),"로그인 성공",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(com.skuniv.myapplication.LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(com.example.news.LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID",ID);
                             intent.putExtra("userPass",PW);
 

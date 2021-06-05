@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -21,8 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.skuniv.myapplication.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         btn_infor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(com.skuniv.myapplication.MainActivity.this, com.skuniv.myapplication.InformationActivity.class);
+                Intent intent = new Intent(com.example.news.MainActivity.this, com.example.news.InformationActivity.class);
                 intent.putExtra("userID",userID);
                 intent.putExtra("userPass",userPass);
                 intent.putExtra("userName",userName);
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //list를 눌렀을 때 화면 전환 -> 게시글 보여주기
-                Intent intent = new Intent(com.skuniv.myapplication.MainActivity.this, ViewActivity.class);
+                Intent intent = new Intent(com.example.news.MainActivity.this, ViewActivity.class);
 
                 //adapter에 담긴 데이터를 position 별로 가져와 담기
                 String str = adapter.getItem(position);
@@ -160,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //버튼을 눌렀을 때 화면 전환 -> 작성페이지로
                 //fill blank -> Activity name.class
-                Intent intent = new Intent(com.skuniv.myapplication.MainActivity.this, WriteActivity.class);
+                Intent intent = new Intent(com.example.news.MainActivity.this, WriteActivity.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"새 게시글 작성", Toast.LENGTH_SHORT).show();

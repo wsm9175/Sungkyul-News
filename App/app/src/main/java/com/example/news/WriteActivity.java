@@ -1,4 +1,4 @@
-package com.skuniv.myapplication;
+package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.skuniv.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,20 +39,7 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
 
 
-        ArrayAdapter sAdapter = ArrayAdapter.createFromResource(this, R.array.major, android.R.layout.simple_spinner_dropdown_item);
 
-        spinner_major.setAdapter(sAdapter);
-        spinner_major.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                str= sAdapter.getItem(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
 
 
@@ -67,6 +53,21 @@ public class WriteActivity extends AppCompatActivity {
         addbutton = findViewById(R.id.add_button);
         spinner_major=findViewById(R.id.spinner_major);
 
+
+        ArrayAdapter<CharSequence> sAdapter = ArrayAdapter.createFromResource(this, R.array.major, android.R.layout.simple_spinner_dropdown_item);
+
+        spinner_major.setAdapter(sAdapter);
+        spinner_major.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                str= sAdapter.getItem(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //add버튼 클릭 시 수행
         addbutton.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class WriteActivity extends AppCompatActivity {
 
             }
             public void requestinsertboard(String title, String contents, String date, String user_id, String board_code){
-                String url = "http://10.0.2.2:3000/boards";
+                String url = "http://10.0.2.2:3000/index/boards";
 
                 //JSON형식으로 데이터 통신을 진행
                 JSONObject testjson = new JSONObject();
@@ -116,6 +117,7 @@ public class WriteActivity extends AppCompatActivity {
                                 if(resultres.equals("OK") ){
                                     Toast.makeText(getApplicationContext(),"게시글 업로드 성공",Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.putExtra("userID",user_id);
                                     startActivity(intent);
                                     finish();
                                 }else{
