@@ -8,7 +8,7 @@ const nunjucks = require('nunjucks');
 const multer = require('multer');
 var bodyParser= require('body-parser');
 var http = require('http');
-const usersrouter= require("./routes/users");
+const indexrouter = require("./routes/index");
 const models=require("./models");
 
 
@@ -43,7 +43,8 @@ models.sequelize.sync().then( () => {
       console.log(err);
     });
 
-app.use('/users', usersrouter);
+app.use('/index', indexrouter);
+
 
 
 

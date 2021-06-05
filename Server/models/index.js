@@ -35,5 +35,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User=require('./user')(sequelize,Sequelize);
+db.Board= require('./board')(sequelize,Sequelize);
 
 module.exports = db;
