@@ -32,6 +32,12 @@
             android:paddingBottom="20dp"
             app:srcCompat="@drawable/plus" />
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/articles_list"
             android:layout_width="match_parent"

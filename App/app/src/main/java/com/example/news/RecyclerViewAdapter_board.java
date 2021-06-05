@@ -63,5 +63,4 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
         return board_list.size();
     }
 
-    //알고리즘 부분 댓글순, 추천순 정렬
 }

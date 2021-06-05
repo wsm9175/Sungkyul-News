@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_id;
     private DrawerLayout drawerLayout;
     private View drawerView;
+    private Spinner spinner;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter_board recyclerAdapter;
     private RequestQueue queue;
@@ -123,10 +125,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        Volley.newRequestQueue(this);
+        queue = Volley.newRequestQueue(this);
         getNews();
 
-
+        //등록순, 댓글순, 추천순 정렬
+        spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.my_array, android.R.layout.simple_spinner_dropdown_item);
 
         //작성 버튼 선언, xml에서 가져오기
         ImageButton btn_write = (ImageButton) findViewById(R.id.btn_write);

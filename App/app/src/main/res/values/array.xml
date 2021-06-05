@@ -13,4 +13,9 @@
         <item>경영학과</item>
         <item>공연예술학과</item>
     </string-array>
+    <string-array name ="my_array">
+        <item>등록순</item>
+        <item>댓글순</item>
+        <item>추천순</item>
+    </string-array>
 </resources>
