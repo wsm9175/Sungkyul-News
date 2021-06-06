@@ -1,5 +1,5 @@
 package com.example.news;
 
-public class AlgorithmCheck {
-    
+public class AlgorithmCheck{
+
 }

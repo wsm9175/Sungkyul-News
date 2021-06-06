@@ -15,17 +15,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#1C8ADB"
-        android:tint="#FFFFFF"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        app:tint="#FFFFFF" />
 
     <TextView
         android:id="@+id/tv_id"
-        android:layout_width="170dp"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:gravity="start"
         android:text="ID"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:textStyle="bold" />
 
     <TextView

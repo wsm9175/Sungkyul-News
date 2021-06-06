@@ -3,10 +3,12 @@ package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -39,6 +41,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter_board recyclerAdapter;
     private RequestQueue queue;
     private ImageButton btn_write;
+    private final List<Board> board_list = new ArrayList<Board>();
+    private final List<Board> board_list_comment = new ArrayList<>();
+    private final List<Board> board_list_recommendation = new ArrayList<>();
+
+    /////////////////////////////////////////////////////////////////////알고리즘 부문
+    //게시판을 담아놓기 위한 배열 선언
+    Board[] board_comment;
+    Board[] board_recommendation;
 
     //새로고침 구현
     private void refreshListView(){
@@ -123,13 +134,26 @@ public class MainActivity extends AppCompatActivity {
 
 
         queue = Volley.newRequestQueue(this);
-//        getNews();
+        getNews();
 
         //등록순, 댓글순, 추천순 정렬
         spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.my_array, android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sort_Adapter(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         //작성 버튼 선언, xml에서 가져오기
         btn_write = (ImageButton) findViewById(R.id.btn_write);
@@ -164,8 +188,7 @@ public class MainActivity extends AppCompatActivity {
                             //데이터안에 배열을 가져옴
                             JSONArray arrayArticles = jsonObject.getJSONArray("articles");
                             //배열안에 게시판을 하나씩 빼옴
-                            //빼온 게시판을 Board Class에 대입 및 ArrayList에 삽입
-                            List<Board> board_list = new ArrayList<Board>();
+                            //빼온 게시판을 Board Class에 대입 및 List에 삽입
                             for(int i=0;i<arrayArticles.length();i++){
                                 JSONObject obj = arrayArticles.getJSONObject(i);
                                 Board board = new Board();
@@ -206,6 +229,186 @@ public class MainActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
+
+    //어댑터 정렬을 위한 메소드
+    public void sort_Adapter(int position){
+
+        switch (position){
+            case 0:
+                //등록일자 기준 정렬
+                Toast.makeText(this, "등록순 정렬", Toast.LENGTH_SHORT).show();
+                sort_view();
+                break;
+            case 1:
+                //댓글수 기준 정렬
+                Toast.makeText(this, "댓글순 정렬", Toast.LENGTH_SHORT).show();
+                sort_comment();
+                break;
+            case 2:
+                //추천수 기준 정렬
+                Toast.makeText(this, "추천순 정렬", Toast.LENGTH_SHORT).show();
+                sort_recommend();
+                break;
+        }
+    }
+
+    public void sort_view(){
+        recyclerAdapter = new RecyclerViewAdapter_board(board_list);
+        recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    public void sort_comment(){
+        if(board_list_comment.size() == 0){
+            board_comment = new Board[board_list.size()];
+            //정렬을 위해 기존 어댑터의 data 리스트에 들어있는 게시판 객체를 배열로 옮김
+            for(int i=0;i<board_list.size();i++){
+                board_comment[i] = board_list.get(i);
+            }
+            //board_comment를 정렬
+            //병합정렬
+//            Board[] temp = new Board[board_list.size()];
+//            mergeSort_comment(0,board_comment.length-1,board_comment, temp);
+            //quick 정렬
+//            quickSort_comment(board_comment, 0, board_comment.length-1);
+            //셸정렬
+            shellSort_comment(board_comment);
+
+            board_list_comment.addAll(Arrays.asList(board_comment));
+        }
+        recyclerAdapter = new RecyclerViewAdapter_board(board_list_comment);
+        recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    public void sort_recommend(){
+        if(board_list_recommendation.size() == 0){
+            board_recommendation = new Board[board_list.size()];
+            //정렬을 위해 기존 어댑터의 data 리스트에 들어있는 게시판 객체를 배열로 옮김
+            for(int i=0;i<board_list.size();i++){
+                board_recommendation[i] = board_list.get(i);
+            }
+            //board_recommedation를 정렬
+            //병합정렬
+//            Board[] temp = new Board[board_list.size()];
+//            mergeSort_recommendation(0,board_recommendation.length-1,board_recommendation, temp);
+            //quick 정렬
+//            quickSort_recommendaton(board_recommendation, 0, board_recommendation.length-1);
+            //셸정렬
+            shellSort_recommendation(board_recommendation);
+
+            board_list_recommendation.addAll(Arrays.asList(board_recommendation));
+        }
+        recyclerAdapter = new RecyclerViewAdapter_board(board_list_recommendation);
+        recyclerView.setAdapter(recyclerAdapter);
+    }
+
+    public static void mergeSort_comment(int start, int end, Board[] board_list, Board[] tmp){
+        if(start < end){
+            int mid = (start + end) / 2;
+            mergeSort_comment(start, mid, board_list, tmp);
+            mergeSort_comment(mid+1, end, board_list, tmp);
+
+            int p = start;
+            int q = mid+1;
+            int idx = p;
+            while(p<=mid || q<=end){
+                    if(q>end || (p<=mid && board_list[p].getComment() > board_list[q].getComment())){
+                        tmp[idx++] = board_list[p++];
+                    }else{
+                        tmp[idx++] = board_list[q++];
+                    }
+            }
+            for(int i=start;i<=end;i++){
+                board_list[i] = tmp[i];
+            }
+        }
+    }
+
+    public static void mergeSort_recommendation(int start, int end, Board[] board_list, Board[] tmp){
+        if(start < end){
+            int mid = (start + end) / 2;
+            mergeSort_recommendation(start, mid, board_list, tmp);
+            mergeSort_recommendation(mid+1, end, board_list, tmp);
+
+            int p = start;
+            int q = mid+1;
+            int idx = p;
+            while(p<=mid || q<=end){
+                if(q>end || (p<=mid && board_list[p].getRecommendation() > board_list[q].getRecommendation())){
+                    tmp[idx++] = board_list[p++];
+                }else{
+                    tmp[idx++] = board_list[q++];
+                }
+            }
+            for(int i=start;i<=end;i++){
+                board_list[i] = tmp[i];
+            }
+        }
+    }
+
+    public static void quickSort_comment(Board[] board_list,int left, int right){
+        int pl = left;
+        int pr = right;
+        int x = board_list[(pl + pr) / 2].getComment();
+        do{
+            while(board_list[pl].getComment() > x) pl++;
+            while(board_list[pr].getComment() < x ) pr--;
+            if(pl <= pr) {
+                swap(board_list, pl++, pr--);
+            }
+        }while(pl <= pr);
+
+        if (left < pr) quickSort_comment(board_list, left, pr);
+        if (pl <right) quickSort_comment(board_list, pl, right);
+    }
+
+    public static void quickSort_recommendaton(Board[] board_list,int left, int right){
+        int pl = left;
+        int pr = right;
+        int x = board_list[(pl + pr) / 2].getRecommendation();
+        do{
+            while(board_list[pl].getRecommendation() > x) pl++;
+            while(board_list[pr].getRecommendation() < x ) pr--;
+            if(pl <= pr) {
+                swap(board_list, pl++, pr--);
+            }
+        }while(pl <= pr);
+
+        if (left < pr) quickSort_recommendaton(board_list, left, pr);
+        if (pl <right) quickSort_recommendaton(board_list, pl, right);
+    }
+
+    public static void shellSort_comment(Board[] board_list){
+        for(int h = board_list.length;h>0;h/=2){
+            for(int i=h;i<board_list.length;i++){
+                int j;
+                Board tmp = board_list[i];
+                for(j=i-h;j>=0 && board_list[j].getComment()<tmp.getComment();j-=h){
+                    board_list[j+h] = board_list[j];
+                }
+                board_list[j+h] = tmp;
+            }
+        }
+    }
+
+    public static void shellSort_recommendation(Board[] board_list){
+        for(int h = board_list.length;h>0;h/=2){
+            for(int i=h;i<board_list.length;i++){
+                int j;
+                Board tmp = board_list[i];
+                for(j=i-h;j>=0 && board_list[j].getRecommendation()<tmp.getRecommendation();j-=h){
+                    board_list[j+h] = board_list[j];
+                }
+                board_list[j+h] = tmp;
+            }
+        }
+    }
+
+    public static void swap(Board[] board_list, int idx1, int idx2) {
+        Board board = board_list[idx1];
+        board_list[idx1] = board_list[idx2];
+        board_list[idx2] = board;
+    }
+
 
     //메뉴창
     DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
@@ -261,3 +464,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
