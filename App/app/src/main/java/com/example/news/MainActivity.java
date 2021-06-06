@@ -123,12 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         queue = Volley.newRequestQueue(this);
-        getNews();
+//        getNews();
 
         //등록순, 댓글순, 추천순 정렬
         spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.my_array, android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
         //작성 버튼 선언, xml에서 가져오기
         btn_write = (ImageButton) findViewById(R.id.btn_write);
