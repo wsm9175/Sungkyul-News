@@ -603,7 +603,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
                     }
                 });
         AlertDialog msgDlg = msgBuilder.create();
