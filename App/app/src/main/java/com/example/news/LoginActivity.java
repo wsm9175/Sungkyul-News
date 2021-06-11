@@ -85,12 +85,16 @@ public class LoginActivity extends AppCompatActivity {
                         //key값에 따라 value값을 쪼개 받아옵니다.
                         String resultId = jsonObject.getString("user_id");
                         String resultPassword = jsonObject.getString("user_password");
+                        String resultName = jsonObject.getString("user_name");
+                        String resultEmail= jsonObject.getString("user_email");
 
                         if(resultId.equals(ID) && resultPassword.equals(PW)){
                             Toast.makeText(getApplicationContext(),"로그인 성공",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(com.example.news.LoginActivity.this, MainActivity.class);
                             intent.putExtra("userID",ID);
                             intent.putExtra("userPass",PW);
+                            intent.putExtra("user_name",resultName);
+                            intent.putExtra("user_email",resultEmail);
 
 
                             startActivity(intent);
