@@ -9,19 +9,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewActivity extends AppCompatActivity {
 
     private EditText comment;
     private ImageButton comment_addbutton;
     private TextView titleView,writerView,dateView,contentView;
+    private RequestQueue queue;
+
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter_comment recyclerAdapter;
+    private final List<Comment> comment_list = new ArrayList<Comment>();
+
+
     int count = 0;
 
     @Override
@@ -41,39 +59,10 @@ public class ViewActivity extends AppCompatActivity {
         dateView = (TextView)findViewById(R.id.dateview);
         contentView = (TextView)findViewById(R.id.contentview);
 
-        //서버로부터 응답 받고, json으로부터 데이터 가져오기
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try{
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean success = jsonObject.getBoolean("success");
-                    if(success) {
-                        String TITLE = jsonObject.getString("TITLE");
-                        String userID = jsonObject.getString("userID");
-                        String CONTENT = jsonObject.getString("CONTENT");
-                        String REG_DATE = jsonObject.getString("REG_DATE");
-
-                        titleView.setText(TITLE);
-                        writerView.setText(userID);
-                        contentView.setText(CONTENT);
-                        dateView.setText(REG_DATE);
-
-                    }
-                    else {
-                        return;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        //서버로부터 요청
-//        viewRequest viewRequest = new viewRequest(BBS_NO,responseListener);
-        RequestQueue queue = Volley.newRequestQueue(com.example.news.ViewActivity.this);
-//        queue.add(viewRequest);
-
+        recyclerView = findViewById(R.id.comments_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        queue = Volley.newRequestQueue(this);
 
 
         //추천 이미지 버튼
@@ -97,50 +86,103 @@ public class ViewActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String newcomment = comment.getText().toString();
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
+            }
+        });
+
+
+
+    }
+    public void getComments(int number) throws JSONException {
+
+        String url ="http://10.0.2.2:3000/index/comments"; //URL입력
+        // Request a string response from the provided URL.
+        JSONObject testjson = new JSONObject();
+        testjson.put("post_number", number);
+        String jsonString = testjson.toString();
+        //response - 서버로 부터 받아오는 데이터
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,testjson,
+                new Response.Listener<JSONObject>() {
+                    //response - 서버로 부터 받아오는 데이터
+                    @Override
+                    public void onResponse(JSONObject response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            boolean success = jsonObject.getBoolean("success");
-                            if (success) {
-                                // 작성 성공
-                                Toast.makeText(getApplicationContext(), "작성되었습니다!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(com.example.news.ViewActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                // 작성 실패
-                                Toast.makeText(getApplicationContext(), "작성이 실패되었습니다.", Toast.LENGTH_SHORT).show();
-                                return;
+                            //데이터를 json화
+                            JSONObject jsonObject = response;
+                            //데이터안에 배열을 가져옴
+                            JSONArray arrayComments = jsonObject.getJSONArray("comments");
+                            //배열안에 게시판을 하나씩 빼옴
+                            //빼온 게시판을 Board Class에 대입 및 List에 삽입
+                            for(int i=0;i<arrayComments.length();i++){
+                                JSONObject obj = arrayComments.getJSONObject(i);
+                                Comment comment = new Comment();
+                                //게시판 number
+                                comment.setUser_name(obj.getString("user_name"));
+                                comment.setComments(obj.getString("real_comments"));
+                                comment.setPost_number(obj.getInt("post_number"));
+                                comment.setUser_id(obj.getString("user_id"));
+
+                                comment_list.add(comment);
                             }
+                            recyclerAdapter = new RecyclerViewAdapter_comment(comment_list);
+                            recyclerView.setAdapter(recyclerAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                };
-
-//                //서버로부터 요청
-//                cviewRequest cviewRequest = new cviewRequest(userID, newcomment, responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(ViewActivity.this);
-//                queue.add(cviewRequest);
-            }
-        });
-
-
-        //comment text 클릭시 intent->CViewActivity로 화면전환
-        TextView text2 = (TextView) findViewById(R.id.comments);
-        text2.setOnClickListener(new View.OnClickListener() {
+                }, new Response.ErrorListener() {
             @Override
-            public void onClick(View v) {
-                //text클릭시 수행
-                //댓글 토스트 메세지
-                //댓글 listview로 화면 전
-                Toast.makeText(getApplicationContext(), "댓글", Toast.LENGTH_SHORT).show();
-                Intent cintent = new Intent(com.example.news.ViewActivity.this, CViewActivity.class);
-//                intent.putExtra("c_userID",c_userID);
-                startActivity(cintent);
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
             }
+
         });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest);
+    }
+
+    public void insertCommet(int number, String user_id,String user_name, String comment) throws JSONException {
+        String url = "http://10.0.2.2:3000/index/comments/comment";
+        JSONObject testjson = new JSONObject();
+        testjson.put("post_number", number);
+        testjson.put("user_name",user_name);
+        testjson.put("user_id",user_id);
+        testjson.put("comment",comment);
+        String jsonString = testjson.toString(); //완성된 json 포맷
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,testjson,
+                new Response.Listener<JSONObject>() {
+                    //response - 서버로 부터 받아오는 데이터
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.toString());
+                            String res = jsonObject.getString("response");
+                            if(res.equals("OK")){
+                                Toast.makeText(getApplicationContext(), "댓글 작성 성공", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "댓글 작성 실패", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
+            }
+
+        });
+
+
     }
 }

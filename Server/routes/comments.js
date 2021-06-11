@@ -22,10 +22,12 @@ router.post('/',async(req,res)=>{
 })
 
 router.post('/comment', async(req,res)=>{
-      var paramName = req.body.userName;
-      var paramuserID=req.body.userID;
+      var paramName = req.body.user_name;
+      var paramuserID=req.body.user_id;
       var paramComment = req.body.comment;
       var parampostNum = req.body.post_number;
+
+      var approve ={'response':'OK'};
 
       var arr = await Comment.create({
             post_number:parampostNum,
@@ -34,5 +36,8 @@ router.post('/comment', async(req,res)=>{
             user_name:paramName,
       })
 
+      res.send(approve);
+
 })
 
+module.exports =router;
