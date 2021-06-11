@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "zxc94139413!",
-    "database": "sungkyulnews",
+    "password": "park6766387!",
+    "database": "adproject",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
