@@ -61,30 +61,13 @@ public class MainActivity extends AppCompatActivity {
     private final List<Board> board_list_comment = new ArrayList<>();
     private final List<Board> board_list_recommendation = new ArrayList<>();
 
-    /////////////////////////////////////////////////////////////////////알고리즘 부문
     //게시판을 담아놓기 위한 배열 선언
     Board[] board_comment;
     Board[] board_recommendation;
 
-    //시간 측정을 위한 변수 선언
-    double merge_start_time_comment=0;
-    double merge_time_taken_comment=0;
-    double shell_start_time_comment=0;
-    double shell_time_taken_comment=0;
-    double quick_start_time_comment=0;
-    double quick_time_taken_comment=0;
-
-    double merge_start_time_recommendation=0;
-    double merge_time_taken_recommendation=0;
-    double shell_start_time_recommendation=0;
-    double shell_time_taken_recommendation=0;
-    double quick_start_time_recommendation=0;
-    double quick_time_taken_recommendation=0;
-
     //새로고침 구현
     private void refreshListView(){
-//        Getlistdata getlistdata = new Getlistdata();
-//        getlistdata.execute();
+        getNews();
     }
 
     @Override
@@ -185,11 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"새 게시글 작성", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        /////////////////////////////////////////알고리즘 부분
-        algorithmCheck();
-        showDialog();
     }
 
     public void getNews(){
@@ -287,14 +265,8 @@ public class MainActivity extends AppCompatActivity {
                 board_comment[i] = board_list.get(i);
             }
             //board_comment를 정렬
-            //병합정렬
-//            Board[] temp = new Board[board_list.size()];
-//            mergeSort_comment(0,board_comment.length-1,board_comment, temp);
-            //quick 정렬
-//            quickSort_comment(board_comment, 0, board_comment.length-1);
-            //셸정렬
-            shellSort_comment(board_comment);
-
+//          quick 정렬
+            quickSort_comment(board_comment, 0, board_comment.length-1);
             board_list_comment.addAll(Arrays.asList(board_comment));
         }
         recyclerAdapter = new RecyclerViewAdapter_board(board_list_comment);
@@ -308,63 +280,13 @@ public class MainActivity extends AppCompatActivity {
             for(int i=0;i<board_list.size();i++){
                 board_recommendation[i] = board_list.get(i);
             }
-            //board_recommedation를 정렬
-            //병합정렬
-//            Board[] temp = new Board[board_list.size()];
-//            mergeSort_recommendation(0,board_recommendation.length-1,board_recommendation, temp);
             //quick 정렬
-//            quickSort_recommendaton(board_recommendation, 0, board_recommendation.length-1);
-            //셸정렬
-            shellSort_recommendation(board_recommendation);
+            quickSort_recommendaton(board_recommendation, 0, board_recommendation.length-1);
 
             board_list_recommendation.addAll(Arrays.asList(board_recommendation));
         }
         recyclerAdapter = new RecyclerViewAdapter_board(board_list_recommendation);
         recyclerView.setAdapter(recyclerAdapter);
-    }
-
-    public static void mergeSort_comment(int start, int end, Board[] board_list, Board[] tmp){
-        if(start < end){
-            int mid = (start + end) / 2;
-            mergeSort_comment(start, mid, board_list, tmp);
-            mergeSort_comment(mid+1, end, board_list, tmp);
-
-            int p = start;
-            int q = mid+1;
-            int idx = p;
-            while(p<=mid || q<=end){
-                    if(q>end || (p<=mid && board_list[p].getComment() > board_list[q].getComment())){
-                        tmp[idx++] = board_list[p++];
-                    }else{
-                        tmp[idx++] = board_list[q++];
-                    }
-            }
-            for(int i=start;i<=end;i++){
-                board_list[i] = tmp[i];
-            }
-        }
-    }
-
-    public static void mergeSort_recommendation(int start, int end, Board[] board_list, Board[] tmp){
-        if(start < end){
-            int mid = (start + end) / 2;
-            mergeSort_recommendation(start, mid, board_list, tmp);
-            mergeSort_recommendation(mid+1, end, board_list, tmp);
-
-            int p = start;
-            int q = mid+1;
-            int idx = p;
-            while(p<=mid || q<=end){
-                if(q>end || (p<=mid && board_list[p].getRecommendation() > board_list[q].getRecommendation())){
-                    tmp[idx++] = board_list[p++];
-                }else{
-                    tmp[idx++] = board_list[q++];
-                }
-            }
-            for(int i=start;i<=end;i++){
-                board_list[i] = tmp[i];
-            }
-        }
     }
 
     public static void quickSort_comment(Board[] board_list,int left, int right){
@@ -397,32 +319,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (left < pr) quickSort_recommendaton(board_list, left, pr);
         if (pl <right) quickSort_recommendaton(board_list, pl, right);
-    }
-
-    public static void shellSort_comment(Board[] board_list){
-        for(int h = board_list.length;h>0;h/=2){
-            for(int i=h;i<board_list.length;i++){
-                int j;
-                Board tmp = board_list[i];
-                for(j=i-h;j>=0 && board_list[j].getComment()<tmp.getComment();j-=h){
-                    board_list[j+h] = board_list[j];
-                }
-                board_list[j+h] = tmp;
-            }
-        }
-    }
-
-    public static void shellSort_recommendation(Board[] board_list){
-        for(int h = board_list.length;h>0;h/=2){
-            for(int i=h;i<board_list.length;i++){
-                int j;
-                Board tmp = board_list[i];
-                for(j=i-h;j>=0 && board_list[j].getRecommendation()<tmp.getRecommendation();j-=h){
-                    board_list[j+h] = board_list[j];
-                }
-                board_list[j+h] = tmp;
-            }
-        }
     }
 
     public static void swap(Board[] board_list, int idx1, int idx2) {
@@ -486,128 +382,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void algorithmCheck(){
-
-        Board[] board_algorithmCheck = new Board[10000];
-
-        //실험을 위해 10000개의 임시 개시한 생성 및 배열에 삽입
-        for (int i=0;i<10000;i++){
-            Board temp = new Board();
-            temp.setNumber(i);
-
-            //알고리즘에서 필요한부분
-            temp.setComment((int) (Math.random() * 10000) + 1);
-            temp.setRecommendation((int) (Math.random() * 10000) + 1);
-
-            temp.setBoard_id("temp");
-            temp.setContent("temp");
-            temp.setName("temp");
-            temp.setRegistrationDate("2021-06-07");
-            temp.setView(123);
-            temp.setWriter("temp");
-
-            board_algorithmCheck[i] = temp;
-        }
-        //댓글순, 추천순으로 정렬 및 결과 값을 받아온다.
-        AlgorithmCheck algorithmCheck = new AlgorithmCheck();
-
-
-        //병합정렬 시간측정 - comment
-        Board[] tmp = new Board[10000];
-        merge_start_time_comment = System.currentTimeMillis();
-        AlgorithmCheck.mergeSort_comment(0, board_algorithmCheck.length-1, board_algorithmCheck, tmp);
-        merge_time_taken_comment = cal_time(merge_start_time_comment);
-
-        //병합정렬 시간측정 - recommendation
-        tmp = new Board[board_algorithmCheck.length];
-        merge_start_time_recommendation = System.currentTimeMillis();
-        AlgorithmCheck.mergeSort_recommendation(0, board_algorithmCheck.length-1, board_algorithmCheck, tmp);
-        merge_time_taken_recommendation = cal_time(merge_start_time_recommendation);
-
-        //초기화
-        for (int i=0;i<10000;i++){
-            Board temp = new Board();
-            temp.setNumber(i);
-
-            //알고리즘에서 필요한부분
-            temp.setComment((int) (Math.random() * 10000) + 1);
-            temp.setRecommendation((int) (Math.random() * 10000) + 1);
-
-            temp.setBoard_id("temp");
-            temp.setContent("temp");
-            temp.setName("temp");
-            temp.setRegistrationDate("2021-06-07");
-            temp.setView(123);
-            temp.setWriter("temp");
-
-            board_algorithmCheck[i] = temp;
-        }
-
-        //셸정렬 시간측정 - comment
-        shell_start_time_comment = System.currentTimeMillis();
-        AlgorithmCheck.shellSort_comment(board_algorithmCheck);
-        shell_time_taken_comment = cal_time(shell_start_time_comment);
-
-        //셸정렬 시간측정 - recommendation
-        shell_start_time_recommendation = System.currentTimeMillis();
-        AlgorithmCheck.shellSort_recommendation(board_algorithmCheck);
-        shell_time_taken_recommendation = cal_time(shell_start_time_recommendation);
-
-        //초기화
-        for(int i=0;i<board_list.size();i++){
-            board_algorithmCheck[i] = board_list.get(i);
-        }
-
-        //퀵정렬 시간측정 - comment
-        quick_start_time_comment = System.currentTimeMillis();
-        AlgorithmCheck.quickSort_comment(board_algorithmCheck, 0, board_algorithmCheck.length-1);
-        quick_time_taken_comment = cal_time(quick_start_time_comment);
-
-        //초기화
-        for (int i=0;i<10000;i++){
-            Board temp = new Board();
-            temp.setNumber(i);
-
-            //알고리즘에서 필요한부분
-            temp.setComment((int) (Math.random() * 10000) + 1);
-            temp.setRecommendation((int) (Math.random() * 10000) + 1);
-
-            temp.setBoard_id("temp");
-            temp.setContent("temp");
-            temp.setName("temp");
-            temp.setRegistrationDate("2021-06-07");
-            temp.setView(123);
-            temp.setWriter("temp");
-
-            board_algorithmCheck[i] = temp;
-        }
-
-        //퀵정렬 시간측정 - recommendation
-        quick_start_time_recommendation = System.currentTimeMillis();
-        AlgorithmCheck.quickSort_recommendation(board_algorithmCheck,0, board_algorithmCheck.length-1);
-        quick_time_taken_recommendation = cal_time(quick_start_time_recommendation);
-
-    }
-
-    public double cal_time(double startTime){
-        return (System.currentTimeMillis() - startTime)/1000;
-    }
-
-    public void showDialog(){
-        String algo_comment = "댓글순 정렬\n 병합정렬 : " + merge_time_taken_comment + " 쉘정렬 : " + shell_time_taken_comment + "\n" + "퀵정렬 : " + quick_time_taken_comment + "\n";
-        String algo_recommendation = "추천순 정렬\n 병합정렬 : " + merge_time_taken_recommendation + " 쉘정렬 : "+ shell_time_taken_recommendation +"\n" + "퀵정렬 : " + quick_time_taken_recommendation;
-        String message = algo_comment + algo_recommendation;
-        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("알고리즘 정렬별 시간 정리")
-                .setMessage(message)
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        AlertDialog msgDlg = msgBuilder.create();
-        msgDlg.show();
-    }
 }
 
