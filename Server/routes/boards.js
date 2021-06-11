@@ -21,7 +21,7 @@ router.post('/',(req,res)=>{
 
 router.get('/',async (req,res)=>{
       var arr = await Board.findAll({
-            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code'],
+            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code','updateAt'],
            raw:true,
       })
       var result ={'articles':arr}
