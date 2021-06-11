@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         queue = Volley.newRequestQueue(this);
+
         getNews();
 
         //등록순, 댓글순, 추천순 정렬
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //작성 버튼 선언, xml에서 가져오기
+       //작성 버튼 선언, xml에서 가져오기
         btn_write = (ImageButton) findViewById(R.id.btn_write);
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override

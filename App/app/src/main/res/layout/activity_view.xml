@@ -89,8 +89,8 @@
         android:adjustViewBounds="true"
         android:background="#0003A9F4"
         android:scaleType="fitXY"
-        android:tint="#3203A9F4"
-        app:srcCompat="@drawable/like" />
+        app:srcCompat="@drawable/like"
+        app:tint="#3203A9F4" />
 
 
 

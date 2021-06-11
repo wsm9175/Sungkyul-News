@@ -11,7 +11,8 @@
         android:roundIcon="@drawable/megaphone"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false">
         <activity
             android:name="com.example.news.introActivity"
             android:label="Sungkyul News">

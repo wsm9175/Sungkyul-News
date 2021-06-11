@@ -31,9 +31,7 @@ public class ViewActivity extends AppCompatActivity {
 
         //intent 받아오며 데이터에서 userID와 BBS_NO 키값 받아오기
         Intent intent = getIntent();
-        final String userID = intent.getExtras().getString("userID");
-        final String BBS_s = intent.getExtras().getString("BBS_NO");
-        int BBS_NO = Integer.parseInt(BBS_s);
+        Board select_board = (Board) intent.getSerializableExtra("select_board");
 
         //게시물의 각 textview 키 값 배정
         titleView = (TextView)findViewById(R.id.titleview);
@@ -41,33 +39,37 @@ public class ViewActivity extends AppCompatActivity {
         dateView = (TextView)findViewById(R.id.dateview);
         contentView = (TextView)findViewById(R.id.contentview);
 
-        //서버로부터 응답 받고, json으로부터 데이터 가져오기
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try{
-                    JSONObject jsonObject = new JSONObject(response);
-                    boolean success = jsonObject.getBoolean("success");
-                    if(success) {
-                        String TITLE = jsonObject.getString("TITLE");
-                        String userID = jsonObject.getString("userID");
-                        String CONTENT = jsonObject.getString("CONTENT");
-                        String REG_DATE = jsonObject.getString("REG_DATE");
-
-                        titleView.setText(TITLE);
-                        writerView.setText(userID);
-                        contentView.setText(CONTENT);
-                        dateView.setText(REG_DATE);
-
-                    }
-                    else {
-                        return;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        titleView.setText(select_board.getName());
+        writerView.setText(select_board.getWriter());
+        dateView.setText(select_board.getRegistrationDate());
+        contentView.setText(select_board.getContent());
+//        //서버로부터 응답 받고, json으로부터 데이터 가져오기
+//        Response.Listener<String> responseListener = new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try{
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    boolean success = jsonObject.getBoolean("success");
+//                    if(success) {
+//                        String TITLE = jsonObject.getString("TITLE");
+//                        String userID = jsonObject.getString("userID");
+//                        String CONTENT = jsonObject.getString("CONTENT");
+//                        String REG_DATE = jsonObject.getString("REG_DATE");
+//
+//                        titleView.setText(TITLE);
+//                        writerView.setText(userID);
+//                        contentView.setText(CONTENT);
+//                        dateView.setText(REG_DATE);
+//
+//                    }
+//                    else {
+//                        return;
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
 
         //서버로부터 요청
 //        viewRequest viewRequest = new viewRequest(BBS_NO,responseListener);

@@ -1,16 +1,18 @@
 package com.example.news;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerViewAdapter_board.MyViewHolder>{
     List<Board> board_list = new ArrayList<Board>();
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_board;
         private TextView txt_boardName;
         private TextView txt_boardContents;
@@ -33,9 +35,24 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
                 txt_boardContents = itemView.findViewById(R.id.txt_boardContents);
                 txt_recommendationNum = itemView.findViewById(R.id.txt_recomendationNum);
                 txt_commentsNum = itemView.findViewById(R.id.txt_commentsNum);
-            }
-        }
 
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos = getAdapterPosition();
+                        Board select_board = board_list.get(pos);
+
+                        v.setBackgroundColor(Color.BLUE);
+
+                        Intent intent = new Intent(v.getContext(), ViewActivity.class);
+                        intent.putExtra("select_board", select_board);
+                        v.getContext().startActivity(intent);
+                    }
+                });
+            }
+
+
+        }
     public RecyclerViewAdapter_board(List<Board> board) {
         board_list = board;
     }
@@ -56,6 +73,7 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
         viewHolder.txt_boardContents.setText(board.getContent());
         viewHolder.txt_commentsNum.setText("댓글수 : "+String.valueOf(board.getComment()));
         viewHolder.txt_recommendationNum.setText("추천수 : "+String.valueOf(board.getRecommendation()));
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
