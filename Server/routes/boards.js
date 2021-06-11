@@ -28,7 +28,6 @@ router.get('/',async (req,res)=>{
 
       console.log(arr);
       console.log(result);
-
       res.send(result);
 
 })
