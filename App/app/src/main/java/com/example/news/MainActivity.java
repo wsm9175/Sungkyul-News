@@ -106,11 +106,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String userID = intent.getStringExtra("userID");
         final String userPass = intent.getStringExtra("userPass");
-        final String userName = intent.getStringExtra("userName");
-        final String userEmail = intent.getStringExtra("userEmail");
+        final String userName = intent.getStringExtra("user_name");
+        final String userEmail = intent.getStringExtra("user_email");
 
         //회원 이름을 text에
-        tv_id.setText(userID);
+        tv_id.setText(userName);
 
         //회원 정보 창을 여는 버튼 구현
         Button btn_infor = (Button)findViewById(R.id.btn_infor);
