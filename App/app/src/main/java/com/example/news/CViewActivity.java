@@ -49,49 +49,6 @@ public class CViewActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         Volley.newRequestQueue(this);
-        getNews();
     }
-    public void getNews(){
 
-        String url ="http://www.google.com"; //URL입력
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    //response - 서버로 부터 받아오는 데이터
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            //데이터를 json화
-                            JSONObject jsonObject = new JSONObject(response);
-                            //데이터안에 배열을 가져옴
-                            JSONArray arrayArticles = jsonObject.getJSONArray("article");
-                            //배열안에 댓글을 하나씩 빼옴
-                            ArrayList<Board> board_list = new ArrayList<Board>();
-                            for(int i=0, j=arrayArticles.length();i<j;i++){
-                                JSONObject obj = arrayArticles.getJSONObject(i);
-                                Board board = new Board();
-                                //위에 가져온 내용을 board에 setting
-                                //board.setNumber(a);
-
-                                board_list.add(board);
-                            }
-                            //response ->> Board Class 분류
-                            recyclerAdapter = new RecyclerViewAdapter_board(board_list);
-                            recyclerView.setAdapter(recyclerAdapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-    }
 }

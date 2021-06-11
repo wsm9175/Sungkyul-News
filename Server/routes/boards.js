@@ -3,7 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 var bodyParser= require('body-parser');
 const Board = require('../models').Board;
-
+const Recommendation = require('../models').recommendation;
 
 router.post('/',(req,res)=>{
       Board.create({
@@ -21,7 +21,7 @@ router.post('/',(req,res)=>{
 
 router.get('/',async (req,res)=>{
       var arr = await Board.findAll({
-            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code','updateAt'],
+            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code','updatedAt'],
            raw:true,
       })
       var result ={'articles':arr}
@@ -32,5 +32,19 @@ router.get('/',async (req,res)=>{
 
 })
 
+router.get('/recommendation/:id',async (req,res)=>{
+      var arr = await recommendation.findAll({
+           where: {
+                  user_id: req.body.user_id,
+                  post_number: req.body.post_number,
+           },
+           raw:true,
+      });
+      if(arr != null){
+            res.send('no');
+      }else{
+            res.send('yes');
+      }
+})
 
 module.exports=router;

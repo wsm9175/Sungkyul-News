@@ -37,7 +37,7 @@ router.post('/login',async(req,res)=>{
       
 
       var arr = await User.findAll({
-            attributes:['user_id', 'user_password','user_email','user_name'],
+            // attributes:['user_id', 'user_password','user_email','user_name'],
             where:{
                   user_id : paramId,
                   user_password : paramPassword,
@@ -47,7 +47,8 @@ router.post('/login',async(req,res)=>{
       })
       console.log("1");
       console.log(arr);
-      var result={'user_id':arr[0].user_id, 'user_name':arr[0].user_name, 'user_password':arr[0].user_password, 'user_email':arr[0].user_email};
+      var result={'user_id':arr[0].user_id, 'user_name':arr[0].user_name, 'user_password':arr[0].user_password, 'user_email':arr[0].user_email, 
+            'user_major':arr[0].user_major, 'user_phoneNumber':arr[0].user_phoneNumber, 'user_schoolId':arr[0].user_schoolId};
       console.log(result);
        res.send(result);
 })

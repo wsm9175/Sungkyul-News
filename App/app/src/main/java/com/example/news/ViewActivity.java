@@ -34,11 +34,11 @@ public class ViewActivity extends AppCompatActivity {
     private ImageButton comment_addbutton;
     private TextView titleView,writerView,dateView,contentView;
     private RequestQueue queue;
-
     private RecyclerView recyclerView;
     private RecyclerViewAdapter_comment recyclerAdapter;
     private final List<Comment> comment_list = new ArrayList<Comment>();
-
+    private Board select_board;
+    private User user;
 
     int count = 0;
 
@@ -49,7 +49,8 @@ public class ViewActivity extends AppCompatActivity {
 
         //intent 받아오며 데이터에서 userID와 BBS_NO 키값 받아오기
         Intent intent = getIntent();
-        Board select_board = (Board) intent.getSerializableExtra("select_board");
+        select_board = (Board) intent.getSerializableExtra("select_board");
+        user = (User) intent.getSerializableExtra("user");
 
         //게시물의 각 textview 키 값 배정
         titleView = (TextView)findViewById(R.id.titleview);
@@ -92,9 +93,6 @@ public class ViewActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
     public void getComments(int number) throws JSONException {
 
@@ -185,7 +183,39 @@ public class ViewActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void getNews(){
+
+        String url ="http://10.0.2.2:3000/index/boards"; //URL입력
+
+        // Request a string response from the provided URL.
+
+        //response - 서버로 부터 받아오는 데이터
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    //response - 서버로 부터 받아오는 데이터
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //데이터를 json화
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray arrayArticles = jsonObject.getJSONArray("articles");
 
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
+            }
+        });
+
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 }

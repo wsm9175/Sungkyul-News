@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(com.example.news.LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-
             }
         });
 
@@ -87,16 +86,25 @@ public class LoginActivity extends AppCompatActivity {
                         String resultPassword = jsonObject.getString("user_password");
                         String resultName = jsonObject.getString("user_name");
                         String resultEmail= jsonObject.getString("user_email");
+                        String resultMajor = jsonObject.getString("user_major");
+                        String resultPhoneNumber = jsonObject.getString("user_phoneNumber");
+                        String resultSchoolId = jsonObject.getString("user_schoolId");
 
                         if(resultId.equals(ID) && resultPassword.equals(PW)){
                             Toast.makeText(getApplicationContext(),"로그인 성공",Toast.LENGTH_SHORT).show();
+
+                            //user 클래스 정보 갱신
+                            User user = new User();
+                            user.setId(resultId);
+                            user.setName(resultName);
+                            user.setEmail(resultEmail);
+                            user.setMajor(resultMajor);
+                            user.setPhoneNumber(resultPhoneNumber);
+                            user.setSchoolId(resultSchoolId);
+
+                            //Main으로 전환
                             Intent intent = new Intent(com.example.news.LoginActivity.this, MainActivity.class);
-                            intent.putExtra("userID",ID);
-                            intent.putExtra("userPass",PW);
-                            intent.putExtra("user_name",resultName);
-                            intent.putExtra("user_email",resultEmail);
-
-
+                            intent.putExtra("user",user);
                             startActivity(intent);
                             finish();
                         }else{
@@ -121,6 +129,9 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
 
     void easyToast(String str){
         Toast.makeText(getApplicationContext(),str,Toast.LENGTH_SHORT).show();

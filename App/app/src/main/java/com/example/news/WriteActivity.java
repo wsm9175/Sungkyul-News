@@ -31,6 +31,7 @@ public class WriteActivity extends AppCompatActivity {
     private ImageButton addbutton;
     private Spinner spinner_major;
     private  String str;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,8 @@ public class WriteActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        final String userID = intent.getExtras().getString("userID");
+        user = (User) intent.getSerializableExtra("user");
+        final String userID = user.getId();
 
         //버튼과 EditText의 키 값 배정
         title = findViewById(R.id.title);

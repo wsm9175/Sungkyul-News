@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private final List<Board> board_list = new ArrayList<Board>();
     private final List<Board> board_list_comment = new ArrayList<>();
     private final List<Board> board_list_recommendation = new ArrayList<>();
+    private User user;
 
     //게시판을 담아놓기 위한 배열 선언
     Board[] board_comment;
@@ -87,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
         drawerView = (View)findViewById(R.id.drawer);
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra("userID");
-        final String userPass = intent.getStringExtra("userPass");
-        final String userName = intent.getStringExtra("user_name");
-        final String userEmail = intent.getStringExtra("user_email");
+        user = (User) intent.getSerializableExtra("user");
 
         //회원 이름을 text에
-        tv_id.setText(userName);
+        tv_id.setText(user.getName());
 
         //회원 정보 창을 여는 버튼 구현
         Button btn_infor = (Button)findViewById(R.id.btn_infor);
@@ -101,10 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(com.example.news.MainActivity.this, com.example.news.InformationActivity.class);
-                intent.putExtra("userID",userID);
-                intent.putExtra("userPass",userPass);
-                intent.putExtra("userName",userName);
-                intent.putExtra("userEmail",userEmail);
+                intent.putExtra("user",user);
                 startActivity(intent);
             }
         });
@@ -164,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 //버튼을 눌렀을 때 화면 전환 -> 작성페이지로
                 //fill blank -> Activity name.class
                 Intent intent = new Intent(com.example.news.MainActivity.this, com.example.news.WriteActivity.class);
-                intent.putExtra("userID",userID);
+                intent.putExtra("user",user);
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(),"새 게시글 작성", Toast.LENGTH_SHORT).show();
             }
@@ -213,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                                 board.setBoard_id( obj.getString("board_code"));
                                 board_list.add(board);
                             }
-                            recyclerAdapter = new RecyclerViewAdapter_board(board_list);
+                            recyclerAdapter = new RecyclerViewAdapter_board(user, board_list);
                             recyclerView.setAdapter(recyclerAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -254,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sort_view(){
-        recyclerAdapter = new RecyclerViewAdapter_board(board_list);
+        recyclerAdapter = new RecyclerViewAdapter_board(user, board_list);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
@@ -270,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
             quickSort_comment(board_comment, 0, board_comment.length-1);
             board_list_comment.addAll(Arrays.asList(board_comment));
         }
-        recyclerAdapter = new RecyclerViewAdapter_board(board_list_comment);
+        recyclerAdapter = new RecyclerViewAdapter_board(user, board_list_comment);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
@@ -286,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
             board_list_recommendation.addAll(Arrays.asList(board_recommendation));
         }
-        recyclerAdapter = new RecyclerViewAdapter_board(board_list_recommendation);
+        recyclerAdapter = new RecyclerViewAdapter_board(user, board_list_recommendation);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
@@ -382,6 +377,5 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
-
 }
 

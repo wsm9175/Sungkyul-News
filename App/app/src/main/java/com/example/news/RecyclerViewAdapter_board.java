@@ -19,6 +19,7 @@ import java.util.List;
 
 public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerViewAdapter_board.MyViewHolder>{
     List<Board> board_list = new ArrayList<Board>();
+    private User user;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView img_board;
@@ -46,6 +47,7 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
 
                         Intent intent = new Intent(v.getContext(), ViewActivity.class);
                         intent.putExtra("select_board", select_board);
+                        intent.putExtra("user", user);
                         v.getContext().startActivity(intent);
                     }
                 });
@@ -53,7 +55,8 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
 
 
         }
-    public RecyclerViewAdapter_board(List<Board> board) {
+    public RecyclerViewAdapter_board(User user,List<Board> board) {
+        this.user = user;
         board_list = board;
     }
 
