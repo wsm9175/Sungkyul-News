@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                 board_recommendation[i] = board_list.get(i);
             }
             //quick 정렬
-            quickSort_recommendaton(board_recommendation, 0, board_recommendation.length-1);
+            quickSort_recommendation(board_recommendation, 0, board_recommendation.length-1);
 
             board_list_recommendation.addAll(Arrays.asList(board_recommendation));
         }
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         if (pl <right) quickSort_comment(board_list, pl, right);
     }
 
-    public static void quickSort_recommendaton(Board[] board_list,int left, int right){
+    public static void quickSort_recommendation(Board[] board_list,int left, int right){
         int pl = left;
         int pr = right;
         int x = board_list[(pl + pr) / 2].getRecommendation();
@@ -315,8 +315,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }while(pl <= pr);
 
-        if (left < pr) quickSort_recommendaton(board_list, left, pr);
-        if (pl <right) quickSort_recommendaton(board_list, pl, right);
+        if (left < pr) quickSort_recommendation(board_list, left, pr);
+        if (pl <right) quickSort_recommendation(board_list, pl, right);
     }
 
     public static void swap(Board[] board_list, int idx1, int idx2) {

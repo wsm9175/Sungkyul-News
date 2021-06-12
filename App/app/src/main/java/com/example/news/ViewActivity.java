@@ -1,6 +1,7 @@
 package com.example.news;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -39,7 +40,7 @@ public class ViewActivity extends AppCompatActivity {
     private final List<Comment> comment_list = new ArrayList<Comment>();
     private Board select_board;
     private User user;
-
+    private ImageButton btn_like;
     int count = 0;
 
     @Override
@@ -67,23 +68,17 @@ public class ViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         queue = Volley.newRequestQueue(this);
+
+        //추천 이미지 버튼
+        btn_like = (ImageButton) findViewById(R.id.btn_like);
+
         try {
             getComments(select_board.getNumber());
+            check_recommendation(select_board.getNumber(), user.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        //추천 이미지 버튼
-        final ImageButton btn_like = (ImageButton) findViewById(R.id.btn_like);
-
-        btn_like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                count++;
-                Toast.makeText(getApplicationContext(),count+" 좋아요", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         //댓글창과 업로드 버튼 키 값 배정
         comment = (EditText)findViewById(R.id.comment);
@@ -102,6 +97,17 @@ public class ViewActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+            }
+        });
+
+        btn_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    post_reommendation(select_board.getNumber(), user.getId(), select_board.getRecommendation());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -212,23 +218,32 @@ public class ViewActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 
-    public void getNews(){
+    public void check_recommendation(int postNumber, String user_id) throws JSONException {
 
-        String url ="http://10.0.2.2:3000/index/boards"; //URL입력
+        String url ="http://10.0.2.2:3000/index/boards/recommendation"; //URL입력
+        JSONObject json = new JSONObject();
+        json.put("post_number", postNumber);
+        json.put("user_id",user_id);
+        String jsonString = json.toString();
 
-        // Request a string response from the provided URL.
-
-        //response - 서버로 부터 받아오는 데이터
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,json,
+                new Response.Listener<JSONObject>() {
                     //response - 서버로 부터 받아오는 데이터
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
+                        JSONObject jsonObject = null;
                         try {
-                            //데이터를 json화
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray arrayArticles = jsonObject.getJSONArray("articles");
-
+                            jsonObject = new JSONObject(response.toString());
+                            String res = jsonObject.getString("response");
+                            if(res.equals("YES")){
+                                //추천버튼 활성화
+                                btn_like.setEnabled(true);
+                                btn_like.setColorFilter(Color.parseColor("#06A8F1"));
+                            }
+                            else{
+                                //추천버튼 비활성화
+                                btn_like.setEnabled(false);
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -237,12 +252,59 @@ public class ViewActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
             }
+
         });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
 
 
         // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        queue.add(jsonObjectRequest);
+    }
+
+    public void post_reommendation(int postNumber, String user_id, int recommendation) throws JSONException {
+
+        String url ="http://10.0.2.2:3000/index/boards/recommendation/insert"; //URL입력
+        JSONObject json = new JSONObject();
+        json.put("post_number", postNumber);
+        json.put("user_id",user_id);
+        json.put("recommendation", recommendation+1);
+
+        String jsonString = json.toString(); //완성된 json 포맷
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,json,
+                new Response.Listener<JSONObject>() {
+                    //response - 서버로 부터 받아오는 데이터
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.toString());
+                            String res = jsonObject.getString("response");
+                            if(res.equals("OK")){
+                                Toast.makeText(getApplicationContext(),"추천 완료", Toast.LENGTH_SHORT).show();
+                                btn_like.setEnabled(false);
+                                btn_like.setColorFilter(Color.parseColor("#3203A9F4"));
+                            }else{
+                                Toast.makeText(getApplicationContext(),"추천 오류", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
+            }
+
+        });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest);
     }
 }

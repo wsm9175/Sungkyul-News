@@ -3,7 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 var bodyParser= require('body-parser');
 const Board = require('../models').Board;
-const Recommendation = require('../models').recommendation;
+const Recommendation = require('../models').Recommendation;
 
 router.post('/',(req,res)=>{
       Board.create({
@@ -32,19 +32,41 @@ router.get('/',async (req,res)=>{
 
 })
 
-router.get('/recommendation/:id',async (req,res)=>{
-      var arr = await recommendation.findAll({
-           where: {
-                  user_id: req.body.user_id,
-                  post_number: req.body.post_number,
-           },
+router.post('/recommendation',async (req,res)=>{
+      console.log(req.body);
+      var arr = await Recommendation.findAll({
+            where:{
+                  post_number : req.body.post_number,
+                  user_id: req.body.user_id,   
+            },
            raw:true,
-      });
-      if(arr != null){
-            res.send('no');
+      })
+      if(arr.length != 0){
+            var result = {'response':'NO'};
+            res.send(result);
+            console.log("recommendation : false");
       }else{
-            res.send('yes');
+            var result = {'response':'YES'};
+            res.send(result);
+            console.log("recommendation : true");
       }
 })
 
+router.post('/recommendation/insert',async (req,res)=>{
+      console.log(req.body);
+      Board.update({
+            recommends: req.body.recommendation,
+      }, {
+            where: {post_number: req.body.post_number },
+      });
+      
+      Recommendation.create({
+            post_number : req.body.post_number,
+            user_id: req.body.user_id,    
+      });
+      var result = {'response':'OK'}
+
+      console.log("삽입 성공");
+      res.send(result);
+})
 module.exports=router;
