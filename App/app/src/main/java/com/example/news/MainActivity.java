@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private void refreshListView(){
         board_list.clear();
         getNews();
+        System.out.prinln("2");
     }
 
     @Override
