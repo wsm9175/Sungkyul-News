@@ -11,7 +11,11 @@ router.post('/',(req,res)=>{
             contents: req.body.contents,
             date : req.body.date,
             user_id: req.body.user_id,
-            board_code:req.body.board_code            
+            board_code:req.body.board_code,
+            view: 0,
+            comment_number: 0,
+            recommends: 0,
+            post_number: 0,
       });
       var result = {'response':'OK'}
 
@@ -57,7 +61,7 @@ router.post('/recommendation/insert',async (req,res)=>{
       Board.update({
             recommends: req.body.recommendation,
       }, {
-            where: {post_number: req.body.post_number },
+            where: {id: req.body.post_number },
       });
       
       Recommendation.create({

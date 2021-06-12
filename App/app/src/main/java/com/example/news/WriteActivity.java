@@ -74,8 +74,6 @@ public class WriteActivity extends AppCompatActivity {
                 String newcontent = content.getText().toString();
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
-
-
                 try {
                     requestinsertboard(newtitle, newcontent, date.toString(), userID, str);
                 } catch (JSONException e) {
@@ -118,7 +116,7 @@ public class WriteActivity extends AppCompatActivity {
                         if (resultres.equals("OK")) {
                             Toast.makeText(getApplicationContext(), "게시글 업로드 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.putExtra("userID", user_id);
+                            intent.putExtra("user", user);
                             startActivity(intent);
                             finish();
                         } else {
