@@ -29,7 +29,6 @@ router.post('/comment', async(req,res)=>{
       var paramComment = req.body.comment;
       var parampostNum = req.body.post_number;
 
-      var approve ={'response':'OK'};
 
       var arr = await Comment.create({
             post_number:parampostNum,
@@ -38,7 +37,16 @@ router.post('/comment', async(req,res)=>{
             user_name:paramName,
       })
 
-      res.send(approve);
+      var arr = await Comment.findAll({
+            attributes:['real_comment','user_name','post_number','user_id'],
+            where:{
+                  post_number:parampostNum,
+            },
+            raw:true
+      })
+      var result ={'comments':arr}
+      res.send(result);
+
 
 })
 

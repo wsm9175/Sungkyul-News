@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     //새로고침 구현
     private void refreshListView(){
+        board_list.clear();
         getNews();
     }
 
