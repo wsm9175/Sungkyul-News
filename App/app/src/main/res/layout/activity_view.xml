@@ -88,7 +88,7 @@
         android:background="#0003A9F4"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/like"
-        app:tint="#3203A9F4" />
+        app:tint="#3203A9F4"/>
 
 
 

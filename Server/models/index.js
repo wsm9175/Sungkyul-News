@@ -38,5 +38,6 @@ db.User=require('./user')(sequelize,Sequelize);
 db.Board= require('./board')(sequelize,Sequelize);
 db.Comment= require('./comment')(sequelize,Sequelize);
 db.Restriction= require('./restriction')(sequelize,Sequelize);
+db.Recommendation = require('./recommendation')(sequelize,Sequelize);
 
 module.exports = db;
