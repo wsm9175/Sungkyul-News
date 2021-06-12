@@ -8,7 +8,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/round_border">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,6 +31,9 @@
                     android:id="@+id/txt_boardName"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
                     android:text="제목" />
 
                 <TextView
@@ -42,6 +46,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                    <ImageView
+                        android:src="@drawable/like2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
 
                     <TextView
                         android:id="@+id/txt_recomendationNum"
@@ -49,6 +57,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="추천수 : " />
+                    <ImageView
+                        android:src="@drawable/comment"
+                        android:layout_width="30dp"
+                        android:layout_height="40dp"/>
 
                     <TextView
                         android:id="@+id/txt_commentsNum"
