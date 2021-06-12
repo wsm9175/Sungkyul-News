@@ -91,8 +91,8 @@ public class ViewActivity extends AppCompatActivity {
 
                 String newcomment = comment.getText().toString();
                 try {
+                    comment_list.clear();
                     insertCommet(select_board.getNumber(),user.getId(),user.getName(),newcomment);
-                    getComments(select_board.getNumber());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -144,6 +144,7 @@ public class ViewActivity extends AppCompatActivity {
                                 System.out.println(comment.getUser_name());
                             }
                             recyclerAdapter = new RecyclerViewAdapter_comment(comment_list);
+
                             recyclerView.setAdapter(recyclerAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -177,18 +178,28 @@ public class ViewActivity extends AppCompatActivity {
                     //response - 서버로 부터 받아오는 데이터
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONObject jsonObject = null;
                         try {
-                            jsonObject = new JSONObject(response.toString());
-                            String res = jsonObject.getString("response");
-                            if(res.equals("OK")){
-                                Toast.makeText(getApplicationContext(), "댓글 작성 성공", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(), "댓글 작성 실패", Toast.LENGTH_SHORT).show();
+                            //데이터를 json화
+                            JSONObject jsonObject = response;
+                            //데이터안에 배열을 가져옴
+                            JSONArray arrayComments = jsonObject.getJSONArray("comments");
+                            //배열안에 게시판을 하나씩 빼옴
+                            //빼온 게시판을 Board Class에 대입 및 List에 삽입
+                            for(int i=0;i<arrayComments.length();i++){
+                                JSONObject obj = arrayComments.getJSONObject(i);
+                                Comment comment = new Comment();
+                                //게시판 number
+                                comment.setUser_name(obj.getString("user_name"));
+                                comment.setComments(obj.getString("real_comment"));
+                                comment.setPost_number(obj.getInt("post_number"));
+                                comment.setUser_id(obj.getString("user_id"));
 
+                                comment_list.add(comment);
+                                System.out.println(comment.getUser_name());
                             }
+                            recyclerAdapter = new RecyclerViewAdapter_comment(comment_list);
 
+                            recyclerView.setAdapter(recyclerAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
