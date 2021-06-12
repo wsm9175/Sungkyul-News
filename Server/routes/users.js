@@ -4,6 +4,7 @@ const path = require('path');
 const router = express.Router();
 var bodyParser= require('body-parser');
 const User = require('../models').User;
+const { raw } = require('body-parser');
 
 
 router.post('/',(req,res)=>{
@@ -19,6 +20,24 @@ router.post('/',(req,res)=>{
       console.log("create ID");
 })
 
+router.post('/IDcheck',async(req,res)=>{
+      var arr= await User.findAll({
+            attributes:['ID'],
+            where:{
+                  user_id:req.body.id,
+            },
+            raw:true
+      })
+
+      if(arr.length==0){
+            var result={"res":"OK"};
+            res.send(result);
+      }
+      else{
+            var result={"res":"Retry"};
+            res.send(result)
+      }
+})
 
 router.post('/login',async(req,res)=>{
 

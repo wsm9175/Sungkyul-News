@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
@@ -146,27 +147,51 @@ public class RegisterActivity extends AppCompatActivity {
 
                 String userID = et_id.getText().toString();
 
-                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                String url ="http://10.0.2.2:3000/index/users/IDcheck"; //URL입력
+                // Request a string response from the provided URL.
+                JSONObject testjson = new JSONObject();
+                try {
+                    testjson.put("id", userID);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String jsonString = testjson.toString();
+                //response - 서버로 부터 받아오는 데이터
+                final RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
 
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            boolean success = jsonObject.getBoolean("success");
-                            if (success) {
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,testjson,
+                        new Response.Listener<JSONObject>() {
+                            //response - 서버로 부터 받아오는 데이터
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    //데이터를 json화
+                                    JSONObject jsonObject = response;
+                                    //데이터안에 배열을 가져옴
+                                    String res = jsonObject.getString("res");
+                                    if(res.equals("Retry")){
+                                        et_id.setText("");
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(), "사용가능한 아이디", Toast.LENGTH_SHORT).show();
+                                    }
 
-                                Toast.makeText(getApplicationContext(), "중복된 아이디입니다.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "사용할 수 있는아이디입니다.", Toast.LENGTH_SHORT).show();
-                                return;
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-
+                        Toast.makeText(getApplicationContext(), "통신오류", Toast.LENGTH_SHORT);
                     }
-                };
+
+                });
+                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+                // Add the request to the RequestQueue.
+                queue.add(jsonObjectRequest);
 
 
             }
