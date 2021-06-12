@@ -12,13 +12,15 @@ router.post('/',async(req,res)=>{
       var parampostnum = req.body.post_number;
 
       var arr = await Comment.findAll({
-            attributes:['real_comment','user_name'],
+            attributes:['real_comment','user_name','post_number','user_id'],
             where:{
                   post_number:parampostnum,
             },
             raw:true
       })
-      res.send(arr);
+      var result ={'comments':arr}
+      console.log(result);
+      res.send(result);
 })
 
 router.post('/comment', async(req,res)=>{

@@ -67,6 +67,11 @@ public class ViewActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         queue = Volley.newRequestQueue(this);
+        try {
+            getComments(select_board.getNumber());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         //추천 이미지 버튼
@@ -90,6 +95,12 @@ public class ViewActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String newcomment = comment.getText().toString();
+                try {
+                    insertCommet(select_board.getNumber(),user.getId(),user.getName(),newcomment);
+                    getComments(select_board.getNumber());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -119,11 +130,12 @@ public class ViewActivity extends AppCompatActivity {
                                 Comment comment = new Comment();
                                 //게시판 number
                                 comment.setUser_name(obj.getString("user_name"));
-                                comment.setComments(obj.getString("real_comments"));
+                                comment.setComments(obj.getString("real_comment"));
                                 comment.setPost_number(obj.getInt("post_number"));
                                 comment.setUser_id(obj.getString("user_id"));
 
                                 comment_list.add(comment);
+                                System.out.println(comment.getUser_name());
                             }
                             recyclerAdapter = new RecyclerViewAdapter_comment(comment_list);
                             recyclerView.setAdapter(recyclerAdapter);
@@ -183,6 +195,10 @@ public class ViewActivity extends AppCompatActivity {
             }
 
         });
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest);
     }
 
     public void getNews(){
