@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:gravity="start"
-        android:text="ID"
+        android:text="이름"
         android:textSize="30dp"
         android:textStyle="bold" />
 

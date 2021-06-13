@@ -281,6 +281,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                     else{
                                         overlap_flag=true;
+                                        Toast.makeText(getApplicationContext(), "사용가능한아이디", Toast.LENGTH_SHORT);
+
                                     }
 
                                 } catch (JSONException e) {
