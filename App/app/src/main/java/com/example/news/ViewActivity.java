@@ -60,7 +60,7 @@ public class ViewActivity extends AppCompatActivity {
         contentView = (TextView)findViewById(R.id.contentview);
 
         titleView.setText(select_board.getName());
-        writerView.setText(select_board.getWriter());
+        writerView.setText(select_board.getWriter_name());
         dateView.setText(select_board.getRegistrationDate());
         contentView.setText(select_board.getContent());
 
