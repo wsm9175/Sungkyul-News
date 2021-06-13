@@ -275,7 +275,6 @@ public class RegisterActivity extends AppCompatActivity {
                                 try {
                                     //데이터를 json화
                                     JSONObject jsonObject = response;
-                                    //데이터안에 배열을 가져옴
                                     String res = jsonObject.getString("res");
                                     if(res.equals("Retry")){
                                         et_id.setText("");
