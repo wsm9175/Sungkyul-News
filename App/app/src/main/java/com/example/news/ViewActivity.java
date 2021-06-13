@@ -92,7 +92,7 @@ public class ViewActivity extends AppCompatActivity {
                 String newcomment = comment.getText().toString();
                 try {
                     comment_list.clear();
-                    insertCommet(select_board.getNumber(),user.getId(),user.getName(),newcomment);
+                    insertCommet(select_board.getNumber(),user.getId(),user.getName(),newcomment,select_board.getComment());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -164,13 +164,14 @@ public class ViewActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 
-    public void insertCommet(int number, String user_id,String user_name, String comment) throws JSONException {
+    public void insertCommet(int number, String user_id,String user_name, String comment, int commentcount) throws JSONException {
         String url = "http://10.0.2.2:3000/index/comments/comment";
         JSONObject testjson = new JSONObject();
         testjson.put("post_number", number);
         testjson.put("user_name",user_name);
         testjson.put("user_id",user_id);
         testjson.put("comment",comment);
+        testjson.put("commentcount",commentcount);
         String jsonString = testjson.toString(); //완성된 json 포맷
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,testjson,

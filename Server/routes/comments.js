@@ -3,6 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 var bodyParser= require('body-parser');
 const Comment = require('../models').Comment;
+const Board = require('../models').Board;
 const { raw } = require('body-parser');
 
 
@@ -28,6 +29,7 @@ router.post('/comment', async(req,res)=>{
       var paramuserID=req.body.user_id;
       var paramComment = req.body.comment;
       var parampostNum = req.body.post_number;
+      var paramCommentCount = req.body.commentcount+1;
 
 
       var arr = await Comment.create({
@@ -44,8 +46,16 @@ router.post('/comment', async(req,res)=>{
             },
             raw:true
       })
+
+      await Board.update({
+            comment_number: paramCommentCount,
+      }, {
+            where: {id: parampostNum },
+      });
+
+
       var result ={'comments':arr}
-      res.send(result);
+      await res.send(result);
 
 
 })

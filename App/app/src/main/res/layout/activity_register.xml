@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="55dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
@@ -42,6 +42,7 @@
         android:layout_marginTop="16dp"
         android:background="#1C8ADB"
         android:text="회원가입"
+        android:enabled="false"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -72,12 +73,23 @@
         app:layout_constraintEnd_toEndOf="@+id/et_name"
         app:layout_constraintStart_toStartOf="@+id/et_name"
         app:layout_constraintTop_toBottomOf="@+id/et_name" />
+    <EditText
+        android:id="@+id/et_emailok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="인증번호 입력"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/et_email"
+        app:layout_constraintStart_toStartOf="@+id/et_email"
+        app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="5dp"
         android:text="Sungkyul News"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,17 +97,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_major"
+    <Spinner
+        android:id="@+id/spinner_register_major"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="학과"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/et_email"
-        app:layout_constraintStart_toStartOf="@+id/et_email"
-        app:layout_constraintTop_toBottomOf="@+id/et_email" />
+        app:layout_constraintEnd_toEndOf="@+id/et_emailok"
+        app:layout_constraintStart_toStartOf="@+id/et_emailok"
+        app:layout_constraintTop_toBottomOf="@+id/et_emailok" />
 
     <EditText
         android:id="@+id/et_schoolid"
@@ -105,9 +114,9 @@
         android:ems="10"
         android:hint="학번"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/et_major"
-        app:layout_constraintStart_toStartOf="@+id/et_major"
-        app:layout_constraintTop_toBottomOf="@+id/et_major" />
+        app:layout_constraintEnd_toEndOf="@+id/spinner_register_major"
+        app:layout_constraintStart_toStartOf="@+id/spinner_register_major"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_register_major" />
 
     <EditText
         android:id="@+id/et_phonenumber"
@@ -133,5 +142,31 @@
         app:layout_constraintBottom_toBottomOf="@+id/et_id"
         app:layout_constraintStart_toEndOf="@+id/et_id"
         app:layout_constraintTop_toTopOf="@+id/et_id" />
+
+    <Button
+        android:id="@+id/btn_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="#1C8ADB"
+        android:text="인증번호 전송"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/et_email"
+        app:layout_constraintStart_toEndOf="@+id/et_email"
+        app:layout_constraintTop_toTopOf="@+id/et_email" />
+
+    <Button
+        android:id="@+id/btn_emailok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="#1C8ADB"
+        android:text="인증번호 확인"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/et_emailok"
+        app:layout_constraintStart_toEndOf="@+id/et_emailok"
+        app:layout_constraintTop_toTopOf="@+id/et_emailok" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
