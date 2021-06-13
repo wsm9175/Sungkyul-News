@@ -148,6 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
                 else{
+                    Toast.makeText(getApplicationContext(), "이메일 인증 실패", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -279,9 +280,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     if(res.equals("Retry")){
                                         et_id.setText("");
                                     }
-                                    else{
+                                    else if(res.equals("OK")){
+                                        Toast.makeText(getApplicationContext(), "사용가능한아이디", Toast.LENGTH_SHORT).show();
                                         overlap_flag=true;
-                                        Toast.makeText(getApplicationContext(), "사용가능한아이디", Toast.LENGTH_SHORT);
 
                                     }
 

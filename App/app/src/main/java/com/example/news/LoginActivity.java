@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     } catch (Exception e) {
+                        easyToast("로그인 실패");
                         e.printStackTrace();
                     }
                 }
@@ -128,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             requestQueue.add(jsonObjectRequest);
 
         } catch (JSONException e) {
+            easyToast("로그인 실패");
             e.printStackTrace();
         }
     }
