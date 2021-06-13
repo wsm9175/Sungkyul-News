@@ -91,4 +91,18 @@ router.post('/recommendation/insert',async (req,res)=>{
       console.log("삽입 성공");
       res.send(result);
 })
+
+router.post('/selectmyboard',async (req,res)=>{
+      var arr = await Board.findAll({
+            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code','user_name','updatedAt'],
+            where:{
+                  user_id:req.body.user_id,
+            },
+           raw:true,
+      })
+      var result ={'articles':arr}
+
+
+      res.send(result);
+})
 module.exports=router;
