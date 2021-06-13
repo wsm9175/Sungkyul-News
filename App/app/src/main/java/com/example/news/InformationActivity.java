@@ -59,14 +59,12 @@ public class InformationActivity extends AppCompatActivity {
         tv_department.setText(user_department);
         tv_level.setText(String.valueOf(user_level));
 
-        //기사작성, 댓글 작성 횟수를 받아오기 위한 코드
+        //기사작성, 댓글 작성 횟수, 유저 경험치를 받아오기 위한 코드
         try {
             getUserInfo(user.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        txt_recommendationCount.setText(String.valueOf(user.getExp()));
-
     }
 
     public void getUserInfo(String user_id) throws JSONException {
@@ -87,9 +85,11 @@ public class InformationActivity extends AppCompatActivity {
                             JSONObject jsonObject = response;
                             int articleCount = jsonObject.getInt("articleCount");
                             int commentCount = jsonObject.getInt("commentCount");
+                            int user_exp = jsonObject.getInt("user_exp");
 
                             txt_articleCount.setText(String.valueOf(articleCount));
                             txt_commentCount.setText(String.valueOf(commentCount));
+                            txt_recommendationCount.setText(String.valueOf(user_exp));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

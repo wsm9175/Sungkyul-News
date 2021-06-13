@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true"
         android:hardwareAccelerated="false">
         <activity
-            android:name="com.example.news.introActivity"
+            android:name="com.example.news.IntroActivity"
             android:label="Sungkyul News">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

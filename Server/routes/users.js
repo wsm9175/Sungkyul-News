@@ -104,7 +104,19 @@ router.post('/info', async(req, res)=> {
 
       commentCount = commentCount.length;
 
-      var response = {"articleCount" : articleCount, "commentCount" : commentCount};
+       // user_exp
+       var user_exp = await User.findAll({
+            attributes: ['user_exp'],
+            where:{
+                  user_id: find_id,
+            },
+            raw:true,
+      })
+
+      user_exp = user_exp[0].user_exp;
+      console.log(user_exp);
+
+      var response = {"articleCount" : articleCount, "commentCount" : commentCount, "user_exp": user_exp};
 
       res.send(response);
 })
