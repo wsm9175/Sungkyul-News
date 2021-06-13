@@ -50,7 +50,7 @@ public class MyBoard extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         try {
-            getNews(user.getName());
+            getNews(user.getId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

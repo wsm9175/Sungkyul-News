@@ -40,5 +40,7 @@
         </activity>
         <activity android:name="com.example.news.CViewActivity">
         </activity>
+        <activity android:name="com.example.news.MyBoard">
+        </activity>
     </application>
 </manifest>

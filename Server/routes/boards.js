@@ -6,6 +6,7 @@ const Board = require('../models').Board;
 const Recommendation = require('../models').Recommendation;
 const User = require('../models').User;
 const user = require('../models/user');
+const { response } = require('express');
 
 router.post('/',(req,res)=>{
       Board.create({
@@ -101,8 +102,7 @@ router.post('/selectmyboard',async (req,res)=>{
            raw:true,
       })
       var result ={'articles':arr}
-
-
+      console.log(result);
       res.send(result);
 })
 module.exports=router;
