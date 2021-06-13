@@ -168,5 +168,10 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_myboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="내가 작성한 글 보기"/>
 </LinearLayout>
 

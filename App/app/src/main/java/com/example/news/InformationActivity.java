@@ -6,6 +6,8 @@ package com.example.news;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class InformationActivity extends AppCompatActivity {
     private int user_level;
     private TextView txt_articleCount, txt_recommendationCount, txt_commentCount;
     private RequestQueue queue;
+    private Button btn_myboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,7 @@ public class InformationActivity extends AppCompatActivity {
         tv_name = (TextView)findViewById(R.id.tv_name);
         tv_department = (TextView)findViewById(R.id.tv_department);
         tv_level = (TextView)findViewById(R.id.tv_level);
+        btn_myboard = findViewById(R.id.btn_myboard);
 
         txt_articleCount = findViewById(R.id.txt_articleCount);
         txt_recommendationCount = findViewById(R.id.txt_recomendationCount);
@@ -65,6 +69,15 @@ public class InformationActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        btn_myboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyBoard.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
     }
 
     public void getUserInfo(String user_id) throws JSONException {
