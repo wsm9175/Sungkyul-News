@@ -42,6 +42,7 @@ public class WriteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
         final String userID = user.getId();
+        final String userName = user.getName();
 
         //버튼과 EditText의 키 값 배정
         title = findViewById(R.id.title);
@@ -75,7 +76,7 @@ public class WriteActivity extends AppCompatActivity {
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
                 try {
-                    requestinsertboard(newtitle, newcontent, date.toString(), userID, str);
+                    requestinsertboard(newtitle, newcontent, date.toString(), userID, str, userName);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -84,7 +85,7 @@ public class WriteActivity extends AppCompatActivity {
 
         });
     }
-    public void requestinsertboard(String title, String contents, String date, String user_id, String board_code) throws JSONException {
+    public void requestinsertboard(String title, String contents, String date, String user_id, String board_code, String userName) throws JSONException {
         String url = "http://10.0.2.2:3000/index/boards";
 
         //JSON형식으로 데이터 통신을 진행
@@ -96,6 +97,7 @@ public class WriteActivity extends AppCompatActivity {
             testjson.put("date", date);
             testjson.put("user_id", user_id);
             testjson.put("board_code", board_code);
+            testjson.put("user_name", userName);
 
 
             String jsonString = testjson.toString(); //완성된 json 포맷

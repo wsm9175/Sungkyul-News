@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     comment_number: DataTypes.INTEGER,
     recommends: DataTypes.INTEGER,
     user_id: DataTypes.STRING,
-    board_code: DataTypes.STRING
+    board_code: DataTypes.STRING,
+    user_name: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'board',

@@ -94,21 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             try {
                                 //받은 json형식의 응답을 받아
-                                JSONObject jsonObject = new JSONObject(response.toString());
-
+                                JSONObject jsonObject = response;
                                 //key값에 따라 value값을 쪼개 받아옴.
-                                String resultId = jsonObject.getString("approve_id");
-                                String resultPassword = jsonObject.getString("approve_pw");
-
-                                if (resultId.equals("OK") & resultPassword.equals("OK")) {
-                                    Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                String res = jsonObject.getString("response");
+                                if (res.equals("OK")) {
+                                    Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    easyToast("로그인 실패");
+                                    easyToast("회원가입 실패");
                                 }
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

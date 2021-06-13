@@ -5,19 +5,28 @@ const router = express.Router();
 var bodyParser= require('body-parser');
 const User = require('../models').User;
 const { raw } = require('body-parser');
+const Board = require('../models').Board;
+const Comment = require('../models').Comment;
 
 
 router.post('/',(req,res)=>{
-      User.create({
-            user_id: req.body.id,
-            user_name: req.body.name,
-            user_password: req.body.password,
-            user_major: req.body.major,
-            user_email: req.body.email,
-            user_phoneNumber : req.body.phonenumber,
-            user_schoolId: req.body.schoolid
-      })
-      console.log("create ID");
+      try {
+            User.create({
+                  user_id: req.body.id,
+                  user_name: req.body.name,
+                  user_password: req.body.password,
+                  user_major: req.body.major,
+                  user_email: req.body.email,
+                  user_phoneNumber : req.body.phonenumber,
+                  user_schoolId: req.body.schoolid,
+                  user_exp: 0,
+            })
+            var response = {"response":"OK"};
+            res.send(response);
+            console.log("create ID");
+      } catch (error) {
+            res.send('ERROR');
+      }
 })
 
 router.post('/IDcheck',async(req,res)=>{
@@ -67,9 +76,37 @@ router.post('/login',async(req,res)=>{
       console.log("1");
       console.log(arr);
       var result={'user_id':arr[0].user_id, 'user_name':arr[0].user_name, 'user_password':arr[0].user_password, 'user_email':arr[0].user_email, 
-            'user_major':arr[0].user_major, 'user_phoneNumber':arr[0].user_phoneNumber, 'user_schoolId':arr[0].user_schoolId};
+            'user_major':arr[0].user_major, 'user_phoneNumber':arr[0].user_phoneNumber, 'user_schoolId':arr[0].user_schoolId,'user_exp':arr[0].user_exp};
       console.log(result);
        res.send(result);
+})
+
+router.post('/info', async(req, res)=> {
+      var find_id = req.body.user_id;
+
+      //게시판 작성 횟수 count
+      var articleCount = await Board.findAll({
+            where:{
+                  user_id: find_id,
+            },
+            raw:true,
+      })
+
+      articleCount = articleCount.length;
+      
+      //댓글 작성 횟수 count
+      var commentCount = await Comment.findAll({
+            where:{
+                  user_id: find_id,
+            },
+            raw:true,
+      })
+
+      commentCount = commentCount.length;
+
+      var response = {"articleCount" : articleCount, "commentCount" : commentCount};
+
+      res.send(response);
 })
 
 module.exports=router;

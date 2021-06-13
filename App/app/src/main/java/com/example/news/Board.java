@@ -12,6 +12,15 @@ public class Board implements Serializable {
     private int recommendation;
     private String writer;
     private String board_id;
+    private String writer_name;
+
+    public String getWriter_name() {
+        return writer_name;
+    }
+
+    public void setWriter_name(String writer_name) {
+        this.writer_name = writer_name;
+    }
 
     public int getNumber() {
         return number;

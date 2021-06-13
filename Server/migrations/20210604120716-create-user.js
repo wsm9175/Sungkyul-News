@@ -29,6 +29,9 @@ module.exports = {
       user_schoolId: {
         type: Sequelize.INTEGER
       },
+      user_exp: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

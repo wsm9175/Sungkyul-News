@@ -208,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
                                 board.setWriter( obj.getString("user_id"));
                                 //게시판 board_id;
                                 board.setBoard_id( obj.getString("board_code"));
+                                board.setWriter_name(obj.getString("user_name"));
+
                                 board_list.add(board);
                             }
                             recyclerAdapter = new RecyclerViewAdapter_board(user, board_list);

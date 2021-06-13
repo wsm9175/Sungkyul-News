@@ -27,6 +27,7 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
         private TextView txt_boardContents;
         private TextView txt_recommendationNum;
         private TextView txt_commentsNum;
+        private TextView txt_writerName;
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -36,7 +37,7 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
                 txt_boardContents = itemView.findViewById(R.id.txt_boardContents);
                 txt_recommendationNum = itemView.findViewById(R.id.txt_recomendationNum);
                 txt_commentsNum = itemView.findViewById(R.id.txt_commentsNum);
-
+                txt_writerName = itemView.findViewById(R.id.txt_writerName);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -76,7 +77,7 @@ public class RecyclerViewAdapter_board extends RecyclerView.Adapter<RecyclerView
         viewHolder.txt_boardContents.setText(board.getContent());
         viewHolder.txt_commentsNum.setText("댓글수 : "+String.valueOf(board.getComment()));
         viewHolder.txt_recommendationNum.setText("추천수 : "+String.valueOf(board.getRecommendation()));
-
+        viewHolder.txt_writerName.setText(String.valueOf(board.getWriter_name()));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

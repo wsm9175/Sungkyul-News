@@ -9,6 +9,15 @@ public class User implements Serializable {
     private String email;
     private String phoneNumber;
     private String schoolId;
+    private int exp;
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
 
     public String getId() {
         return id;

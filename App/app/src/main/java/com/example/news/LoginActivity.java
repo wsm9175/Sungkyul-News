@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                         String resultMajor = jsonObject.getString("user_major");
                         String resultPhoneNumber = jsonObject.getString("user_phoneNumber");
                         String resultSchoolId = jsonObject.getString("user_schoolId");
+                        int resultExp = jsonObject.getInt("user_exp");
 
                         if(resultId.equals(ID) && resultPassword.equals(PW)){
                             Toast.makeText(getApplicationContext(),"로그인 성공",Toast.LENGTH_SHORT).show();
@@ -101,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                             user.setMajor(resultMajor);
                             user.setPhoneNumber(resultPhoneNumber);
                             user.setSchoolId(resultSchoolId);
+                            user.setExp(resultExp);
 
                             //Main으로 전환
                             Intent intent = new Intent(com.example.news.LoginActivity.this, MainActivity.class);

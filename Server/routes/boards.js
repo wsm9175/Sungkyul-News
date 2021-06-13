@@ -4,6 +4,8 @@ const router = express.Router();
 var bodyParser= require('body-parser');
 const Board = require('../models').Board;
 const Recommendation = require('../models').Recommendation;
+const User = require('../models').User;
+const user = require('../models/user');
 
 router.post('/',(req,res)=>{
       Board.create({
@@ -16,6 +18,7 @@ router.post('/',(req,res)=>{
             comment_number: 0,
             recommends: 0,
             post_number: 0,
+            user_name:req.body.user_name,
       });
       var result = {'response':'OK'}
 
@@ -25,7 +28,7 @@ router.post('/',(req,res)=>{
 
 router.get('/',async (req,res)=>{
       var arr = await Board.findAll({
-            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code','updatedAt'],
+            attributes:['id','title','contents','date','view','comment_number','recommends','user_id','board_code','user_name','updatedAt'],
            raw:true,
       })
       var result ={'articles':arr}
@@ -68,6 +71,21 @@ router.post('/recommendation/insert',async (req,res)=>{
             post_number : req.body.post_number,
             user_id: req.body.user_id,    
       });
+
+      var user_exp = await User.findAll({
+            attributes : ['user_exp'],
+            where:{
+                  user_id : req.body.user_id,
+            },
+            raw:true,
+      })
+      console.log(user_exp[0]);
+      User.update({
+            user_exp: user_exp[0].user_exp +1,
+      },{
+            where: {user_id: req.body.user_id}
+      });
+
       var result = {'response':'OK'}
 
       console.log("삽입 성공");

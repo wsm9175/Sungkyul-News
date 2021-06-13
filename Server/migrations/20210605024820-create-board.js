@@ -36,6 +36,9 @@ module.exports = {
       board_code: {
         type: Sequelize.STRING
       },
+      user_name: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -104,7 +104,7 @@ public class ViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    post_reommendation(select_board.getNumber(), user.getId(), select_board.getRecommendation());
+                    post_reommendation(select_board.getNumber(), user.getId(), select_board.getRecommendation(), select_board.getWriter());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -265,14 +265,14 @@ public class ViewActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 
-    public void post_reommendation(int postNumber, String user_id, int recommendation) throws JSONException {
+    public void post_reommendation(int postNumber, String user_id, int recommendation, String writer) throws JSONException {
 
         String url ="http://10.0.2.2:3000/index/boards/recommendation/insert"; //URL입력
         JSONObject json = new JSONObject();
         json.put("post_number", postNumber);
         json.put("user_id",user_id);
         json.put("recommendation", recommendation+1);
-
+        json.put("writer", writer);
         String jsonString = json.toString(); //완성된 json 포맷
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,json,
